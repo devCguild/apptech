@@ -17,6 +17,10 @@ export default function MiniAppPage() {
   }, [app]);
 
   if (!app) return <Navigate to="/apps" replace />;
+  if (app.href) {
+    window.location.replace(app.href);
+    return null;
+  }
   const { Component } = app;
 
   return (

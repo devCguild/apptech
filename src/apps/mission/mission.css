@@ -1,0 +1,20 @@
+.mission { padding: 8px 20px 32px; display: flex; flex-direction: column; }
+.mission-summary {
+  display: flex; flex-direction: column; gap: 4px;
+  background: #feeddf; border-radius: 20px; padding: 20px 24px;
+}
+.mission-message { min-height: 22px; margin: 12px 0 0; font-size: 14px; color: #0066ff; font-weight: 600; }
+.mission-section { margin: 16px 0 10px; }
+.mission-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.mission-row {
+  display: flex; align-items: center; gap: 12px;
+  background: #f4f6f8; border-radius: 16px; padding: 14px 16px;
+}
+.mission-row-text { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.mission-reward { font-size: 14px; font-weight: 700; color: #e2723c; white-space: nowrap; }
+.mission-row.is-done { opacity: 0.6; }
+.mission-row button { white-space: nowrap; }
+.mission-pending {
+  margin: 0; padding: 16px; border-radius: 16px; border: 1px dashed #c7cbd1;
+  font-size: 14px; color: #6b7280; line-height: 1.5;
+}

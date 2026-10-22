@@ -1,7 +1,7 @@
 import { ProgressIndicator, Tab, TabList, TabListItem, TabPanel, Typography } from "@montage-ui/core";
 import { useEffect, useState } from "react";
 
-import { TIME_SLOTS, currentSlot } from "../../timeSlots.js";
+import { TIME_SLOTS, currentSlot } from "./lib/slots.js";
 import { loadAllDays, loadDay, rewardOf, saveDay, todayKST, totalOf } from "./lib/records.js";
 import { characterOf } from "./lib/character.js";
 import { HEALTH, bodyOf } from "./lib/health.js";

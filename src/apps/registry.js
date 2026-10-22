@@ -1,4 +1,5 @@
 // 앱 입구에 보이는 미니앱 목록은 여기 한 곳에서만 정한다 (CLAUDE.md 앱 구조 규칙)
+// 미니앱은 React 컴포넌트(Component) 또는 독립 HTML 앱 주소(href) 중 하나
 import petBanner from "../assets/hub/pet-banner.png";
 import petCard from "../assets/hub/pet-card.png";
 import quizIcon from "../assets/hub/quiz-icon.png";
@@ -7,7 +8,6 @@ import missionIcon from "../assets/hub/mission-icon.png";
 import missionCard from "../assets/hub/mission-card.png";
 import samki from "./meals/samki.svg";
 
-import MoapetApp from "./moapet/index.jsx";
 import QuizApp from "./quiz/index.jsx";
 import MissionApp from "./mission/index.jsx";
 import MealsApp from "./meals/index.jsx";
@@ -31,7 +31,7 @@ export const MINI_APPS = [
     icon: petCard,
     banner: petBanner,
     card: petCard,
-    Component: MoapetApp,
+    href: `${import.meta.env.BASE_URL}moapet/`, // 독립 HTML 앱 (public/moapet/)
   },
   {
     id: "quiz",
