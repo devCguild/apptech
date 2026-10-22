@@ -238,6 +238,7 @@ class RewardStore:
                 ).all()
                 return {
                     "environment": environment,
+                    "user_id": guest.user_id,
                     "balance": rows[0][1] if rows else 0,
                     "unit": "P",
                     "transactions": [

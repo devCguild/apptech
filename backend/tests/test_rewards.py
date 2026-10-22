@@ -96,8 +96,9 @@ def test_session_creates_independent_empty_server_wallets(client):
     assert first["token"] != second["token"]
     assert first["token"] != first["user_id"]
     assert wallet(client, first) == {
-        "environment": "test", "balance": 0, "unit": "P", "transactions": []
+        "environment": "test", "user_id": first["user_id"], "balance": 0, "unit": "P", "transactions": []
     }
+    assert wallet(client, second)["user_id"] == second["user_id"]
     assert wallet(client, second)["balance"] == 0
 
 
