@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
-from app import parks
 from app.main import app
+from app.routers import walk as parks
 
 client = TestClient(app)
 

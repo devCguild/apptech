@@ -1,3 +1,6 @@
+# 산책 스팟 백엔드: GET /api/parks (이슈 #9: 앱 라우터는 app/routers/<앱id>.py)
+# 필요한 환경 변수: DATA_GO_KR_KEY (공공데이터포털 "전국도시공원정보표준데이터" 인증키)
+#   로컬은 backend/.env, Vercel 은 Settings → Environment Variables
 import json
 import os
 from concurrent.futures import ThreadPoolExecutor
@@ -23,7 +26,7 @@ def _service_key():
     """DATA_GO_KR_KEY 를 환경 변수 → backend/.env 순서로 찾는다."""
     value = os.getenv("DATA_GO_KR_KEY")
     if not value:
-        env_file = Path(__file__).resolve().parent.parent / ".env"
+        env_file = Path(__file__).resolve().parents[2] / ".env"  # backend/app/routers/ → backend/
         if env_file.exists():
             for line in env_file.read_text(encoding="utf-8").splitlines():
                 name, _, rest = line.partition("=")

@@ -6,7 +6,6 @@ import quizIcon from "../assets/hub/quiz-icon.png";
 import quizCard from "../assets/hub/quiz-card.png";
 import missionIcon from "../assets/hub/mission-icon.png";
 import missionCard from "../assets/hub/mission-card.png";
-import walkArt from "./walk/walk.svg";
 import whereamiIcon from "./whereami/art-icon.svg"; // CMG
 import whereamiCard from "./whereami/art-card.svg"; // CMG
 import samki from "./meals/samki.svg";
@@ -15,7 +14,7 @@ import pokemonCard from "./pokemon/assets/card.png";
 
 import QuizApp from "./quiz/index.jsx";
 import MissionApp from "./mission/index.jsx";
-import WalkApp from "./walk/index.jsx";
+import walkApp from "./walk/app.config.js"; // 산책 스팟: 설정은 앱 폴더에 (이슈 #9)
 import WhereamiApp from "./whereami/index.jsx"; // CMG
 import MealsApp from "./meals/index.jsx";
 import PokemonApp from "./pokemon/index.jsx";
@@ -80,19 +79,7 @@ export const MINI_APPS = [
     card: samki,
     Component: MealsApp,
   },
-  {
-    id: "walk",
-    name: "산책 스팟",
-    category: "mission",
-    tone: "green",
-    summary: "가까운 공원 걷고 100P",
-    catalog: "오늘의 공원까지\n걸어가요",
-    cta: "산책 스팟 보기",
-    icon: walkArt,
-    banner: walkArt,
-    card: walkArt,
-    Component: WalkApp,
-  },
+  walkApp,
   // CMG — 여기는 어디? (Windy Webcams 나라 맞히기)
   {
     id: "whereami",

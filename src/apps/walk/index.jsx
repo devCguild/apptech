@@ -1,11 +1,11 @@
 import { Button, FlexBox, SectionMessage, Skeleton, Typography } from "@montage-ui/core";
 import { useEffect, useState } from "react";
 
-import { API, loadSeoulParks } from "../../api.js";
 import coins from "../../assets/hub/coins.png";
 import missionCard from "../../assets/hub/mission-card.png";
 import { addPoints, readPointEvents } from "../../lib/points.js";
 import { kstDate, readJson, writeJson } from "../../lib/storage.js";
+import { PARKS_URL, loadSeoulParks } from "./api.js";
 import { distanceMeters, formatDistance, parksWithin, pickTodaySpot } from "./geo.js";
 
 const APP_ID = "walk"; // registry.js 의 id
@@ -240,7 +240,7 @@ export default function App() {
       <section className="record">
         <span>
           <Typography variant="caption1" color="semantic.foreground.neutral.secondary">
-            서울 공원 (원본 JSON): <a href={API.parks}>{API.parks}</a>
+            서울 공원 (원본 JSON): <a href={PARKS_URL}>{PARKS_URL}</a>
           </Typography>
           <Typography variant="caption1" color="semantic.foreground.neutral.tertiary">
             출처: 공공데이터포털 「전국도시공원정보표준데이터」

@@ -10,7 +10,7 @@ from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.parks import router as parks_router
+from app.routers.walk import router as parks_router
 from app.webcam_quiz import router as webcam_quiz_router
 from app.config import Settings
 from app.storage import (
