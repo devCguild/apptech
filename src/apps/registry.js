@@ -7,13 +7,15 @@ import quizCard from "../assets/hub/quiz-card.png";
 import missionIcon from "../assets/hub/mission-icon.png";
 import missionCard from "../assets/hub/mission-card.png";
 import walkArt from "./walk/walk.svg";
+import whereamiIcon from "./whereami/art-icon.svg"; // CMG
+import whereamiCard from "./whereami/art-card.svg"; // CMG
+import samki from "./meals/samki.svg";
 
 import QuizApp from "./quiz/index.jsx";
 import MissionApp from "./mission/index.jsx";
 import WalkApp from "./walk/index.jsx";
 import WhereamiApp from "./whereami/index.jsx"; // CMG
-import whereamiIcon from "./whereami/art-icon.svg"; // CMG
-import whereamiCard from "./whereami/art-card.svg"; // CMG
+import MealsApp from "./meals/index.jsx";
 
 export const CATEGORIES = [
   { id: "all", label: "전체" },
@@ -61,6 +63,19 @@ export const MINI_APPS = [
     banner: missionCard,
     card: missionCard,
     Component: MissionApp,
+  },
+  {
+    id: "meals",
+    name: "삼시삼키",
+    category: "pet",
+    tone: "peach",
+    summary: "세 끼 기록하고\n삼키 키우기",
+    catalog: "먹은 만큼\n삼키가 달라져요",
+    cta: "밥 기록하러 가기",
+    icon: samki,
+    banner: samki,
+    card: samki,
+    Component: MealsApp,
   },
   {
     id: "walk",
