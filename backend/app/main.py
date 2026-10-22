@@ -10,6 +10,7 @@ from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from app.parks import router as parks_router
 from app.webcam_quiz import router as webcam_quiz_router
 from app.config import Settings
 from app.storage import (
@@ -78,6 +79,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
 
     api.include_router(webcam_quiz_router)
+    api.include_router(parks_router)
 
     @api.exception_handler(StorageUnavailable)
     async def unavailable(_, __):
