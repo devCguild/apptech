@@ -1,32 +1,12 @@
 <!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>(서비스 이름)</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <!-- 미리보기 스위치 자리 (?t=morning|lunch|evening) -->
-  <nav class="preview" aria-label="시간대 미리보기"></nav>
-
-  <header>
-    <h1>(서비스 이름)</h1>
-    <!-- 시간대 인사 자리 -->
-    <p class="greeting"></p>
-  </header>
-
-  <main class="cards">
-    <section class="card" data-slot="morning"><h2>아침</h2></section>
-    <section class="card" data-slot="lunch"><h2>점심</h2></section>
-    <section class="card" data-slot="evening"><h2>저녁</h2></section>
-  </main>
-
-  <footer class="api-box">
-    <h2>🔌 이 화면이 쓰는 API</h2>
-    <ul class="api-list"></ul>
-  </footer>
-
-  <script src="app.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>(서비스 이름)</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
