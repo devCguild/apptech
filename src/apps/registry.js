@@ -2,14 +2,12 @@
 // 새 방식: 각 앱 폴더의 app.config.js 를 자동으로 모은다 → 앱 PR은 자기 폴더만 고친다
 // 아래 LISTED_APPS 는 아직 옮기지 않은 앱. 옮기면 여기서 지운다
 // 미니앱은 React 컴포넌트(Component) 또는 독립 HTML 앱 주소(href) 중 하나
-import walkArt from "./walk/walk.svg";
 import whereamiIcon from "./whereami/art-icon.svg"; // CMG
 import whereamiCard from "./whereami/art-card.svg"; // CMG
 import samki from "./meals/samki.svg";
 import pokemonIcon from "./pokemon/assets/icon.png";
 import pokemonCard from "./pokemon/assets/card.png";
 
-import WalkApp from "./walk/index.jsx";
 import WhereamiApp from "./whereami/index.jsx"; // CMG
 import MealsApp from "./meals/index.jsx";
 import PokemonApp from "./pokemon/index.jsx";
@@ -34,19 +32,6 @@ const LISTED_APPS = [
     banner: samki,
     card: samki,
     Component: MealsApp,
-  },
-  {
-    id: "walk",
-    name: "산책 스팟",
-    category: "mission",
-    tone: "green",
-    summary: "가까운 공원 걷고 100P",
-    catalog: "오늘의 공원까지\n걸어가요",
-    cta: "산책 스팟 보기",
-    icon: walkArt,
-    banner: walkArt,
-    card: walkArt,
-    Component: WalkApp,
   },
   // CMG — 여기는 어디? (Windy Webcams 나라 맞히기)
   {
