@@ -1,7 +1,9 @@
-import { Button, Chip, FlexBox, SectionMessage, Typography } from "@montage-ui/core";
+import { Button, FlexBox, SectionMessage, Skeleton, Typography } from "@montage-ui/core";
 import { useEffect, useState } from "react";
 
 import { API, loadSeoulParks } from "../../api.js";
+import coins from "../../assets/hub/coins.png";
+import missionCard from "../../assets/hub/mission-card.png";
 import { addPoints, readPointEvents } from "../../lib/points.js";
 import { kstDate, readJson, writeJson } from "../../lib/storage.js";
 import { distanceMeters, formatDistance, parksWithin, pickTodaySpot } from "./geo.js";
@@ -99,121 +101,153 @@ export default function App() {
     setVerify({ status: "done", message: `+${VISIT_POINTS}P 인증 완료` });
   }
 
+  const loading = location.status === "loading" || parks.status === "loading";
+
+  // 화면: 시안(docs/design/hub-mock.png)의 홈 카드 규칙을 index.css 공용 클래스로 그대로 따른다
   return (
-    <FlexBox flexDirection="column" gap="12px" sx={{ padding: "8px 20px 32px" }}>
-      <FlexBox justifyContent="space-between" alignItems="center" gap="8px">
-        <Typography as="h2" variant="headline2" weight="bold" color="semantic.foreground.neutral.strong">
-          🌳 오늘의 산책 스팟
-        </Typography>
-        <Chip size="small" variant="outlined" disableInteraction>
-          산책 포인트 {points}P
-        </Chip>
+    <main className="page" style={{ background: "var(--page-bg)" }}>
+      <FlexBox flexDirection="column" gap="var(--spacing-12)">
+        {/* 안내: 위치 실패 · 목업 데이터 */}
+        {location.status === "fallback" && (
+          <SectionMessage variant="info" description="서울시청 기준으로 가까운 공원을 보여 드려요.">
+            {location.message}
+          </SectionMessage>
+        )}
+        {parks.status === "done" && parks.isMock && (
+          <SectionMessage
+            variant="cautionary"
+            description={`공원 정보를 불러오지 못해 예시 공원 5곳으로 보여 드려요. (${parks.error})`}
+          >
+            목업 데이터 사용 중
+          </SectionMessage>
+        )}
+
+        {/* 포인트: 홈 "내 포인트" 카드와 같은 모양 */}
+        <section className="point-card">
+          <span>
+            <Typography variant="label1" color="semantic.foreground.neutral.tertiary">
+              산책으로 모은 포인트
+            </Typography>
+            <Typography as="p" variant="title1" weight="bold" color="semantic.foreground.neutral.strong">
+              {points.toLocaleString("ko-KR")} P
+            </Typography>
+            <Typography variant="label1" color="semantic.foreground.neutral.tertiary">
+              방문 인증 1번에 {VISIT_POINTS} P
+            </Typography>
+          </span>
+          <img src={coins} alt="" className="point-card-art" />
+        </section>
       </FlexBox>
 
-      {location.status === "loading" && (
-        <Typography variant="body2" color="semantic.foreground.neutral.tertiary">
-          📍 내 위치를 확인하는 중이에요…
-        </Typography>
-      )}
-      {location.status === "fallback" && (
-        <SectionMessage variant="info" description="서울시청 기준으로 가까운 공원을 보여 드려요.">
-          {location.message}
-        </SectionMessage>
-      )}
+      <Typography as="h2" variant="headline1" weight="bold" className="section-title">
+        오늘의 산책 스팟
+      </Typography>
 
-      {parks.status === "loading" && (
-        <Typography variant="body2" color="semantic.foreground.neutral.tertiary">
-          공원 목록을 불러오는 중이에요…
-        </Typography>
-      )}
-      {parks.status === "done" && parks.isMock && (
-        <SectionMessage
-          variant="cautionary"
-          description={`공원 정보를 불러오지 못해 예시 공원 5곳으로 보여 드려요. (${parks.error})`}
-        >
-          목업 데이터 사용 중
-        </SectionMessage>
-      )}
-
-      {parks.status === "done" && !spot && (
-        <Typography variant="body2" color="semantic.foreground.neutral.secondary">
-          내 위치에서 2km 안에 공원이 없어요.
-        </Typography>
-      )}
-
-      {spot && (
-        <FlexBox flexDirection="column" gap="4px">
-          <Typography variant="title3" weight="bold" color="semantic.foreground.neutral.strong">
-            {spot.name}
+      {/* 로딩: 카드 자리를 미리 잡아 둔다 */}
+      {loading && (
+        <FlexBox flexDirection="column" gap="var(--spacing-8)">
+          <Skeleton variant="rectangle" width="100%" height="200px" radius="var(--radius-20)" />
+          <Typography variant="label1" color="semantic.foreground.neutral.tertiary">
+            {location.status === "loading" ? "📍 내 위치를 확인하는 중이에요…" : "공원 목록을 불러오는 중이에요…"}
           </Typography>
+        </FlexBox>
+      )}
+
+      {!loading && !spot && (
+        <section className="point-card">
           <Typography variant="body2" color="semantic.foreground.neutral.secondary">
-            {spot.address}
+            내 위치에서 2km 안에 공원이 없어요.
           </Typography>
-          <Typography variant="label1" weight="medium" color="semantic.foreground.brand.primary">
-            {location.status === "ok" ? "내 위치에서" : "서울시청에서"} {formatDistance(spot.distance)}
-            {fixedPark && " · 오늘의 스팟은 하루 동안 그대로예요"}
-          </Typography>
-        </FlexBox>
+        </section>
       )}
 
-      {spot && (
-        <FlexBox flexDirection="column" gap="6px">
-          <Button
-            variant="solid"
-            color="primary"
-            fullWidth
-            loading={verify.status === "checking"}
-            disabled={alreadyVisited}
-            onClick={handleVerify}
-          >
-            {alreadyVisited ? "오늘은 이미 인증했어요" : "방문 인증"}
-          </Button>
-          {verify.message && (
-            <Typography
-              variant="body2"
-              weight="medium"
-              color={
-                verify.status === "done"
-                  ? "semantic.foreground.positive.primary"
-                  : "semantic.foreground.neutral.secondary"
-              }
-            >
-              {verify.message}
+      {/* 오늘의 스팟: 홈 "이어서 즐겨요" 카드 + 미션(살구색) 그림 */}
+      {!loading && spot && (
+        <section className="feature-card tone-peach">
+          <div className="feature-card-text">
+            <Typography variant="label1" weight="bold" color="semantic.foreground.neutral.tertiary">
+              {location.status === "ok" ? "내 위치에서" : "서울시청에서"} {formatDistance(spot.distance)}
             </Typography>
-          )}
+            <Typography as="h3" variant="title3" weight="bold" color="semantic.foreground.neutral.strong">
+              {spot.name}
+            </Typography>
+            <Typography variant="label1" color="semantic.foreground.neutral.secondary">
+              {spot.address}
+            </Typography>
+            <Button
+              variant="solid"
+              size="medium"
+              className={alreadyVisited ? "feature-card-cta" : "feature-card-cta cta-peach"}
+              loading={verify.status === "checking"}
+              disabled={alreadyVisited}
+              onClick={handleVerify}
+            >
+              {alreadyVisited ? "오늘 인증 완료" : "방문 인증"}
+            </Button>
+          </div>
+          <img className="feature-card-art" src={missionCard} alt="" />
+        </section>
+      )}
+      {!loading && fixedPark && (
+        <Typography
+          variant="caption1"
+          color="semantic.foreground.neutral.tertiary"
+          sx={{ marginTop: "var(--spacing-8)", paddingLeft: "var(--spacing-4)" }}
+        >
+          오늘의 스팟은 하루 동안 그대로예요. 내일 새 공원이 골라져요.
+        </Typography>
+      )}
+
+      {/* 인증 결과 */}
+      {verify.message && (
+        <FlexBox flexDirection="column" sx={{ marginTop: "var(--spacing-12)" }}>
+          <SectionMessage variant={verify.status === "done" ? "positive" : "cautionary"}>
+            {verify.message}
+          </SectionMessage>
         </FlexBox>
       )}
 
+      {/* 근처 공원: "내 기록" 적립 내역 줄과 같은 모양 */}
       {nearby.length > 0 && (
-        <FlexBox flexDirection="column" gap="4px">
-          <Typography variant="label1" weight="bold" color="semantic.foreground.neutral.secondary">
-            2km 안 공원 {nearby.length}곳 (가까운 순)
+        <>
+          <Typography as="h2" variant="headline1" weight="bold" className="section-title">
+            2km 안 공원 {nearby.length}곳
           </Typography>
-          <ol style={{ margin: 0, paddingLeft: "20px" }}>
+          <ul className="records">
             {nearby.slice(0, 10).map((park) => (
-              <li key={`${park.name}|${park.address}`}>
-                <Typography variant="body2" color="semantic.foreground.neutral.primary">
-                  {park.name} · {formatDistance(park.distance)}
+              <li key={`${park.name}|${park.address}`} className="record">
+                <span>
+                  <Typography variant="body2" weight="bold">
+                    {park.name}
+                  </Typography>
+                  <Typography variant="caption1" color="semantic.foreground.neutral.tertiary">
+                    {park.address}
+                  </Typography>
+                </span>
+                <Typography variant="body1" weight="bold" color="semantic.foreground.neutral.strong">
+                  {formatDistance(park.distance)}
                 </Typography>
               </li>
             ))}
-          </ol>
-        </FlexBox>
+          </ul>
+        </>
       )}
 
       {/* 🔌 이 화면이 쓰는 API (CLAUDE.md API 화면 규칙: 맨 아래에 주소·원본 JSON·출처) */}
-      <FlexBox flexDirection="column" gap="2px" sx={{ marginTop: "12px" }}>
-        <Typography variant="label2" weight="bold" color="semantic.foreground.neutral.secondary">
-          🔌 이 화면이 쓰는 API
-        </Typography>
-        <Typography variant="caption1" color="semantic.foreground.neutral.tertiary">
-          서울 공원 (원본 JSON): <a href={API.parks}>{API.parks}</a>
-        </Typography>
-        <Typography variant="caption1" color="semantic.foreground.neutral.tertiary">
-          출처: 공공데이터포털 「전국도시공원정보표준데이터」
-          {parks.referenceDate ? ` · 데이터 기준일 ${parks.referenceDate}` : ""} · 인증 기록 날짜 {today}
-        </Typography>
-      </FlexBox>
-    </FlexBox>
+      <Typography as="h2" variant="headline1" weight="bold" className="section-title">
+        🔌 이 화면이 쓰는 API
+      </Typography>
+      <section className="record">
+        <span>
+          <Typography variant="caption1" color="semantic.foreground.neutral.secondary">
+            서울 공원 (원본 JSON): <a href={API.parks}>{API.parks}</a>
+          </Typography>
+          <Typography variant="caption1" color="semantic.foreground.neutral.tertiary">
+            출처: 공공데이터포털 「전국도시공원정보표준데이터」
+            {parks.referenceDate ? ` · 데이터 기준일 ${parks.referenceDate}` : ""} · 인증 기록 날짜 {today}
+          </Typography>
+        </span>
+      </section>
+    </main>
   );
 }
