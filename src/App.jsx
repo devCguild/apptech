@@ -5,6 +5,7 @@ import PreviewSwitch from "./components/PreviewSwitch.jsx";
 import Greeting from "./components/Greeting.jsx";
 import SlotCard from "./components/SlotCard.jsx";
 import ApiBox from "./components/ApiBox.jsx";
+import WalkSpot from "./components/WalkSpot.jsx";
 
 export default function App() {
   return (
@@ -18,7 +19,9 @@ export default function App() {
       </header>
       <main className="cards">
         {Object.entries(TIME_SLOTS).map(([slot, { label }]) => (
-          <SlotCard key={slot} slot={slot} label={label} />
+          <SlotCard key={slot} slot={slot} label={label}>
+            {slot === "lunch" && <WalkSpot />}
+          </SlotCard>
         ))}
       </main>
       <ApiBox />
