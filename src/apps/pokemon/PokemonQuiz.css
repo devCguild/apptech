@@ -1,8 +1,12 @@
-/* 포켓몬 실루엣 퀴즈 전용. 간격·모서리는 Montage 토큰(--spacing-*, --radius-*), 무대(.pq-stage) 색만 직접 정한다 (PLAN.md 디자인) */
+/* 포켓몬 실루엣 퀴즈 전용. 바탕·카드는 공용 index.css 변수(--page-bg, --card-bg, --radius), 간격은 Montage 토큰(--spacing-*), 무대(.pq-stage) 색만 직접 정한다 (PLAN.md 디자인) */
 /* 간격은 입구 화면(.page: 좌우 20px, 구역 사이 24~28px)과 리듬을 맞춘다 */
-.pq { display: grid; gap: var(--spacing-24); padding: var(--spacing-24) var(--spacing-20) var(--spacing-32); }
+/* 다른 미니앱처럼 연회색 바탕 위에 흰 카드를 올린다 */
+.pq { flex: 1; display: grid; align-content: start; gap: var(--spacing-24); padding: var(--spacing-24) var(--spacing-20) var(--spacing-32); background: var(--page-bg); }
 .pq-header { display: flex; align-items: baseline; justify-content: space-between; }
-.pq-form, .pq-result { display: grid; gap: var(--spacing-12); }
+.pq-form, .pq-result {
+  display: grid; gap: var(--spacing-12);
+  padding: var(--spacing-20); border-radius: var(--radius); background: var(--card-bg);
+}
 .pq-actions { display: grid; grid-template-columns: 1fr auto; gap: var(--spacing-12); }
 .pq-hint-row { display: grid; align-items: center; justify-items: start; }
 .pq-hint-row > * { grid-area: 1 / 1; }
