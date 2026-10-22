@@ -1,8 +1,8 @@
 // ⏰ 시간대는 여기 한 곳에서만 정한다 (CLAUDE.md 시간대 규칙)
 export const TIME_SLOTS = {
-  morning: { label: "아침", emoji: "🌅", from: "06:00", to: "10:59", greeting: "좋은 아침이에요! 아침 한 끼로 오늘을 시작해요", todo: "아침 식사를 기록하고 경험치 +10 받기" }, // ⏰ 아침
-  lunch:   { label: "점심", emoji: "🌞", from: "11:00", to: "15:59", greeting: "점심 맛있게 드셨나요? 방금 먹은 걸 남겨 봐요", todo: "점심 식사를 기록하고 캐릭터 키우기" }, // ⏰ 점심
-  evening: { label: "저녁", emoji: "🌙", from: "16:00", to: "05:59", greeting: "오늘 하루 수고했어요. 저녁까지 채우면 삼시 완성!", todo: "저녁을 기록하고 '삼시 완성' 보너스 +20 받기" }, // ⏰ 저녁
+  morning: { label: "아침", emoji: "🌅", tone: "peach", from: "06:00", to: "10:59", greeting: "좋은 아침이에요! 아침 한 끼로 오늘을 시작해요", todo: "아침 식사를 기록하고 경험치 +10 받기" }, // ⏰ 아침
+  lunch:   { label: "점심", emoji: "🌞", tone: "green", from: "11:00", to: "15:59", greeting: "점심 맛있게 드셨나요? 방금 먹은 걸 남겨 봐요", todo: "점심 식사를 기록하고 캐릭터 키우기" }, // ⏰ 점심
+  evening: { label: "저녁", emoji: "🌙", tone: "blue", from: "16:00", to: "05:59", greeting: "오늘 하루 수고했어요. 저녁까지 채우면 삼시 완성!", todo: "저녁을 기록하고 '삼시 완성' 보너스 +20 받기" }, // ⏰ 저녁
 };
 
 const toMinutes = (hhmm) => {
