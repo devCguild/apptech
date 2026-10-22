@@ -88,7 +88,12 @@
 .meals .stat-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--card-bg); border-radius: 16px; padding: 14px 16px; }
 
 /* 🔌 API 상자 */
-.meals .api-box { display: flex; flex-direction: column; gap: 6px; margin-top: 32px; padding: 16px; border-radius: 16px; background: var(--card-bg); }
+.meals .api-box { margin-top: 32px; border-radius: 16px; background: var(--card-bg); }
+.meals .api-box > summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 16px; cursor: pointer; list-style: none; }
+.meals .api-box > summary::-webkit-details-marker { display: none; }
+.meals .api-box-chevron { color: #a1a5ad; transition: transform 0.2s; }
+.meals .api-box[open] .api-box-chevron { transform: rotate(90deg); }
+.meals .api-box-body { display: flex; flex-direction: column; gap: 6px; padding: 0 16px 16px; }
 .meals .api-box-error { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .meals .api-list { margin: 0; padding-left: 18px; }
 .meals .api-list a { text-decoration: underline; }
