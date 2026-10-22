@@ -1,0 +1,4 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; line-height: 1.6; }
+.cards { display: grid; gap: 12px; padding: 16px; }
+.api-box { padding: 16px; font-size: 14px; }
