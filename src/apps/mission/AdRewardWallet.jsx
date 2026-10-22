@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Typography } from "@montage-ui/core";
 
-import { API } from "../../api.js";
 import { rewardsClient } from "../../lib/rewards.js";
 import { canOpenNativeOfferwall, nativeRewards } from "../../lib/nativeRewards.js";
 import "./rewards.css";
@@ -153,18 +152,6 @@ export default function AdRewardWallet() {
           </>
         )}
       </div>
-      <footer className="ad-rewards-api">
-        <details>
-          <summary><Typography as="span" variant="caption1">🔌 이 화면이 쓰는 API</Typography></summary>
-          <Typography as="p" variant="caption1">출처: 앱테크 적립 서버</Typography>
-          <a href={API.rewardsStatus} target="_blank" rel="noreferrer"><Typography as="span" variant="caption1">준비 상태 · 원본 JSON 보기</Typography></a>
-          <Typography as="p" variant="caption1" className="ad-rewards-api-url">{API.rewardsStatus}</Typography>
-          {hasWallet && <>
-            <Typography as="p" variant="caption1">내 적립 내역은 계정 인증 후 조회해요.</Typography>
-            <Typography as="p" variant="caption1" className="ad-rewards-api-url">{API.rewardsSession}<br />{API.rewardsWallet}</Typography>
-          </>}
-        </details>
-      </footer>
     </div>
   );
 }
