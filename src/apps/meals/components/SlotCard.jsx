@@ -6,7 +6,7 @@ import { HEALTH, judgeFood } from "../lib/health.js";
 import MealForm from "./MealForm.jsx";
 
 // 시간대 카드 (아침/점심/저녁 하나씩). 지금 시간대는 큰 톤 카드로 강조, 나머지는 한 줄로 접어 둔다
-export default function SlotCard({ slot, info, active, open, onToggle, items, onAdd, onRemove }) {
+export default function SlotCard({ slot, info, active, open, onToggle, items, dataStatus, onAdd, onRemove }) {
   const total = totalOf(items);
   const summary = items.length ? `${items.length}개 · ${Math.round(total.kcal)}kcal` : "아직 기록 없음";
 
@@ -46,7 +46,7 @@ export default function SlotCard({ slot, info, active, open, onToggle, items, on
           <span className="now-card-art" aria-hidden="true">{info.emoji}</span>
         </div>
         {list}
-        <MealForm slot={slot} tone={info.tone} onAdd={onAdd} />
+        <MealForm slot={slot} tone={info.tone} dataStatus={dataStatus} onAdd={onAdd} />
       </section>
     );
   }
@@ -67,7 +67,7 @@ export default function SlotCard({ slot, info, active, open, onToggle, items, on
       </summary>
       <div className="slot-row-body">
         {list}
-        <MealForm slot={slot} tone={info.tone} onAdd={onAdd} />
+        <MealForm slot={slot} tone={info.tone} dataStatus={dataStatus} onAdd={onAdd} />
       </div>
     </details>
   );

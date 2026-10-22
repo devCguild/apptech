@@ -6,7 +6,7 @@ import { HEALTH, judgeFood } from "../lib/health.js";
 
 // 식사 입력: "김치찌개, 공기밥" + 인분 선택 → 기록 (이름·연락처 같은 개인정보는 받지 않는다)
 // 치는 동안 마지막 쉼표 뒤 글자로 관련 음식을 아래에 추천한다 (data.js 안에서만 찾아서 API 호출 없음)
-export default function MealForm({ slot, tone, onAdd }) {
+export default function MealForm({ slot, tone, dataStatus, onAdd }) {
   const [text, setText] = useState("");
   const [ratio, setRatio] = useState(1);
   const [focused, setFocused] = useState(false);
@@ -114,7 +114,7 @@ export default function MealForm({ slot, tone, onAdd }) {
         ))}
       </div>
       <Typography variant="caption1" color="semantic.foreground.neutral.tertiary">
-        치면 아래에 관련 음식이 떠요 · 쉼표(,)로 여러 개를 적을 수 있어요
+        {dataStatus === "loading" ? "영양 데이터를 불러오는 중이에요… 그동안은 예시 음식만 찾아져요" : "치면 아래에 관련 음식이 떠요 · 쉼표(,)로 여러 개를 적을 수 있어요"}
       </Typography>
     </form>
   );

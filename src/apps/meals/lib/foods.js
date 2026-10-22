@@ -18,9 +18,17 @@ export const SAMPLE_FOODS = [
 ];
 
 // public/data.js 에 파이썬이 받아 둔 음식(음식·통합·건강기능식품 3종)이 있으면 그걸, 없으면 임시 예시값을 쓴다
-export const NUTRITION_DATA = window.NUTRITION_DATA ?? null;
-export const isSample = !NUTRITION_DATA?.foods?.length;
-const FOODS = isSample ? SAMPLE_FOODS : NUTRITION_DATA.foods;
+// data.js 는 미니앱이 열릴 때 lib/nutrition.js 가 불러와서 setNutritionData 로 넣어 준다
+export let NUTRITION_DATA = null;
+export let isSample = true;
+let FOODS = SAMPLE_FOODS;
+
+export function setNutritionData(data) {
+  if (!data?.foods?.length) return;
+  NUTRITION_DATA = data;
+  isSample = false;
+  FOODS = data.foods;
+}
 
 // 같은 이름이 여러 데이터에 있으면 음식 → 통합 → 건강기능식품 순으로 쓴다
 const KIND_ORDER = { food: 0, integrated: 1, supplement: 2 };

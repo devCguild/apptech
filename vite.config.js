@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// GitHub Pages 주소가 https://devcguild.github.io/apptech/ 라서 base 가 레포 이름
+// 배포 주소의 앞부분. GitHub Pages 는 /apptech/ (deploy.yml 이 BASE_PATH 로 넘김), Vercel·로컬은 /
 export default defineConfig({
   plugins: [react()],
-  base: "/apptech/",
+  base: process.env.BASE_PATH ?? "/",
 });

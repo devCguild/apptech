@@ -1,6 +1,6 @@
 import { SegmentedControl, SegmentedControlItem, Typography } from "@montage-ui/core";
 
-import { TIME_SLOTS, currentSlot } from "../timeSlots.js";
+import { TIME_SLOTS, currentSlot } from "../../../timeSlots.js";
 
 // 미리보기 스위치: 고르면 ?t=morning|lunch|evening 주소로 이동
 export default function PreviewSwitch() {

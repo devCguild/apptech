@@ -1,13 +1,17 @@
 import { BottomNavigation, BottomNavigationItem } from "@montage-ui/core";
-import { IconHome, IconPerson } from "@montage-ui/icon";
+import { IconApps, IconDocumentText, IconHome } from "@montage-ui/icon";
+import { useLocation, useNavigate } from "react-router";
 
-// 하단 탭: 오늘 기록 / 내 캐릭터
-export default function TabBar({ value, onChange }) {
+export default function TabBar() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
   return (
     <nav className="tab-bar">
-      <BottomNavigation value={value} onValueChange={onChange}>
-        <BottomNavigationItem value="today" icon={<IconHome />} label="오늘" />
-        <BottomNavigationItem value="character" icon={<IconPerson />} label="내 캐릭터" />
+      <BottomNavigation value={pathname} onValueChange={navigate}>
+        <BottomNavigationItem value="/" icon={<IconHome />} label="홈" />
+        <BottomNavigationItem value="/apps" icon={<IconApps />} label="전체 앱" />
+        <BottomNavigationItem value="/records" icon={<IconDocumentText />} label="내 기록" />
       </BottomNavigation>
     </nav>
   );
