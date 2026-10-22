@@ -1,11 +1,7 @@
-// 앱 입구에 보이는 미니앱 목록은 여기 한 곳에서만 정한다 (CLAUDE.md 앱 구조 규칙)
+// 앱 입구에 보이는 미니앱 목록 (CLAUDE.md 앱 구조 규칙, 이슈 #9)
+// 새 방식: 각 앱 폴더의 app.config.js 를 자동으로 모은다 → 앱 PR은 자기 폴더만 고친다
+// 아래 LISTED_APPS 는 아직 옮기지 않은 앱. 옮기면 여기서 지운다
 // 미니앱은 React 컴포넌트(Component) 또는 독립 HTML 앱 주소(href) 중 하나
-import petBanner from "../assets/hub/pet-banner.png";
-import petCard from "../assets/hub/pet-card.png";
-import quizIcon from "../assets/hub/quiz-icon.png";
-import quizCard from "../assets/hub/quiz-card.png";
-import missionIcon from "../assets/hub/mission-icon.png";
-import missionCard from "../assets/hub/mission-card.png";
 import walkArt from "./walk/walk.svg";
 import whereamiIcon from "./whereami/art-icon.svg"; // CMG
 import whereamiCard from "./whereami/art-card.svg"; // CMG
@@ -13,8 +9,6 @@ import samki from "./meals/samki.svg";
 import pokemonIcon from "./pokemon/assets/icon.png";
 import pokemonCard from "./pokemon/assets/card.png";
 
-import QuizApp from "./quiz/index.jsx";
-import MissionApp from "./mission/index.jsx";
 import WalkApp from "./walk/index.jsx";
 import WhereamiApp from "./whereami/index.jsx"; // CMG
 import MealsApp from "./meals/index.jsx";
@@ -27,46 +21,7 @@ export const CATEGORIES = [
   { id: "mission", label: "미션" },
 ];
 
-export const MINI_APPS = [
-  {
-    id: "moapet",
-    name: "모아펫",
-    category: "pet",
-    tone: "green",
-    summary: "작은 미션으로\n새싹 친구 키우기", // 홈 목록·이어서 즐겨요
-    catalog: "매일 돌보며\n함께 자라요", // 전체 앱 카드
-    cta: "펫 보러 가기",
-    icon: petCard,
-    banner: petBanner,
-    card: petCard,
-    href: `${import.meta.env.BASE_URL}moapet/`, // 독립 HTML 앱 (public/moapet/)
-  },
-  {
-    id: "quiz",
-    name: "오늘의 퀴즈",
-    category: "quiz",
-    tone: "blue",
-    summary: "한 문제씩 가볍게 도전",
-    catalog: "짧게 풀고\n차곡차곡 모아요",
-    cta: "퀴즈 풀러 가기",
-    icon: quizIcon,
-    banner: quizCard,
-    card: quizCard,
-    Component: QuizApp,
-  },
-  {
-    id: "mission",
-    name: "미션 모으기",
-    category: "mission",
-    tone: "peach",
-    summary: "내게 맞는 미션 찾아보기",
-    catalog: "마음에 드는 미션을\n골라요",
-    cta: "미션 고르러 가기",
-    icon: missionIcon,
-    banner: missionCard,
-    card: missionCard,
-    Component: MissionApp,
-  },
+const LISTED_APPS = [
   {
     id: "meals",
     name: "삼시삼키",
@@ -121,6 +76,14 @@ export const MINI_APPS = [
     Component: PokemonApp,
   },
 ];
+
+// app.config.js 로 옮긴 앱은 order 순서로 먼저, 그 뒤에 아직 안 옮긴 앱
+// 같은 id 가 둘 다 있으면 app.config.js 쪽만 쓴다(옮긴 앱 PR이 이 파일을 안 고쳐도 중복 없음)
+const CONFIGURED_APPS = Object.values(import.meta.glob("./*/app.config.js", { eager: true, import: "default" }))
+  .sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
+const configuredIds = new Set(CONFIGURED_APPS.map((app) => app.id));
+
+export const MINI_APPS = [...CONFIGURED_APPS, ...LISTED_APPS.filter((app) => !configuredIds.has(app.id))];
 
 export function findMiniApp(appId) {
   return MINI_APPS.find((app) => app.id === appId);
