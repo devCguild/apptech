@@ -48,6 +48,7 @@ src/apps/pokemon/
 ├── pokeapi.js             # PokeAPI 호출, 캐시, 미리 받기
 ├── quiz.js                # 문제 뽑기, 정답 판정, 힌트
 ├── storage.js             # 포인트: lib/points.js 로 적립
+├── assets/                # 홈·전체 앱 그림 (icon.png, card.png)
 └── PLAN.md
 ```
 
@@ -124,11 +125,10 @@ src/apps/pokemon/
 | `summary` | 실루엣 보고 맞히기 |
 | `catalog` | 실루엣을 보고 / 포켓몬을 맞혀요 |
 | `cta` | 맞히러 가기 |
-| `icon`, `banner`, `card` | 전용 그림이 없어 오늘의 퀴즈 그림(`quiz-icon.png`, `quiz-card.png`)을 같이 쓴다 |
+| `icon`, `banner`, `card` | `assets/icon.png`, `assets/card.png`. 입구의 다른 그림처럼 연파랑 바탕의 말랑한 3D 느낌으로 그리고, 실루엣은 특정 포켓몬이 아닌 생물 모양으로 그린다 |
 
 ## 정하지 않은 것
 
-- 홈·전체 앱에 쓸 전용 그림
 - 문제당 포인트. 지금은 10 P(`POINTS_PER_QUIZ`)다
 - 정답 언어 (지금은 한국어·영어 모두 정답)
 - 출제 범위 (지금은 1세대, `MAX_POKEMON_ID = 151`)
