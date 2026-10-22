@@ -9,6 +9,9 @@ import missionCard from "../assets/hub/mission-card.png";
 import MoapetApp from "./moapet/index.jsx";
 import QuizApp from "./quiz/index.jsx";
 import MissionApp from "./mission/index.jsx";
+import WhereamiApp from "./whereami/index.jsx"; // CMG
+import whereamiIcon from "./whereami/art-icon.svg"; // CMG
+import whereamiCard from "./whereami/art-card.svg"; // CMG
 
 export const CATEGORIES = [
   { id: "all", label: "전체" },
@@ -56,6 +59,20 @@ export const MINI_APPS = [
     banner: missionCard,
     card: missionCard,
     Component: MissionApp,
+  },
+  // CMG — 여기는 어디? (Windy Webcams 나라 맞히기)
+  {
+    id: "whereami",
+    name: "여기는 어디?",
+    category: "quiz",
+    tone: "sky",
+    summary: "웹캠 사진 보고 나라 맞히기",
+    catalog: "세계 곳곳 풍경 보고\n어느 나라인지 맞혀요",
+    cta: "맞히러 가기",
+    icon: whereamiIcon,
+    banner: whereamiCard,
+    card: whereamiCard,
+    Component: WhereamiApp,
   },
 ];
 
