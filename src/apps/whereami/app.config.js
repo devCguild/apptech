@@ -6,6 +6,7 @@ import card from "./art-card.svg";
 
 export default {
   id: "whereami",
+  order: 10,
   name: "여기는 어디?",
   category: "quiz",
   tone: "sky",

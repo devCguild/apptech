@@ -8,7 +8,7 @@ export function readPointEvents() {
   return Array.isArray(events) ? events : [];
 }
 
-// 미니앱에서 포인트를 줄 때 부른다. 예: addPoints("quiz", 10, "오늘의 퀴즈 정답")
+// 미니앱에서 포인트를 줄 때 부른다. 예: addPoints("mission", 10, "출석 체크")
 export function addPoints(appId, amount, reason) {
   const now = new Date();
   const event = { appId, amount, reason, at: now.toISOString(), date: kstDate(now) };
