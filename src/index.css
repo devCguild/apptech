@@ -1,8 +1,107 @@
-/* Montage 기본 스타일(global.css) 위에 배치만 정한다. 색·글자는 Montage Typography 로 */
+/* Montage 기본 스타일(global.css) 위에 배치만 정한다. 색·글자는 Montage Typography·토큰으로 */
+/* 앱 화면 하나: 모바일 폭(최대 430px)으로 고정하고 가운데에 둔다 */
+body { background: var(--semantic-background-neutral-secondary); }
+.app { position: relative; max-width: 430px; min-height: 100vh; margin: 0 auto; overflow: hidden; background: var(--semantic-background-neutral-primary); }
+
+/* 위쪽 무대: 하늘 → 풀밭 그라데이션 */
+.stage {
+  position: relative;
+  padding-bottom: 40px;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--semantic-foreground-accent-cyan-rgb), 0.28) 0%,
+    rgba(var(--semantic-foreground-accent-lime-rgb), 0.28) 45%,
+    rgba(var(--semantic-foreground-accent-lime-rgb), 0.5) 100%
+  );
+}
 .preview { display: flex; align-items: center; gap: 8px; padding: 12px 16px 0; }
 .preview > span { white-space: nowrap; flex-shrink: 0; }
-.header { padding: 16px 16px 0; }
-.cards { display: grid; gap: 12px; padding: 16px; }
-.card { padding: 16px; border: 1px solid rgba(112, 115, 124, 0.22); border-radius: 12px; }
-.api-box { padding: 16px; }
-.api-list { margin: 8px 0 0; padding-left: 18px; }
+
+/* 미션 아이콘 줄 */
+.mission-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 20px 12px 0; }
+.mission { display: grid; justify-items: center; gap: 6px; padding: 4px 0; border: 0; background: none; cursor: pointer; }
+.mission-icon { position: relative; display: grid; place-items: center; width: 56px; height: 56px; font-size: 40px; line-height: 1; }
+.mission-badge {
+  position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+  padding: 1px 6px; border-radius: var(--radius-10); white-space: nowrap;
+  font-size: 11px; font-weight: 700; line-height: 16px;
+  color: var(--semantic-foreground-neutral-inverse); background: var(--semantic-foreground-negative-primary);
+}
+.mission-badge.is-done { background: var(--semantic-foreground-positive-primary); }
+
+/* 공지 띠 */
+.notice {
+  display: flex; align-items: center; gap: 10px; margin: 16px 16px 0; padding: 14px 16px;
+  border-radius: var(--radius-16); background: var(--semantic-background-neutral-primary);
+  box-shadow: var(--semantic-elevation-shadow-normal-xsmall);
+}
+
+/* 언덕 + 캐릭터 장면 */
+.scene { position: relative; height: 340px; margin-top: 8px; }
+.hill { position: absolute; left: -20%; right: -20%; border-radius: 50% 50% 0 0; }
+.hill-back { bottom: 70px; height: 200px; background: rgba(var(--semantic-foreground-accent-lime-rgb), 0.35); }
+.hill-front { bottom: 0; height: 160px; left: -10%; right: -40%; background: rgba(var(--semantic-foreground-accent-lime-rgb), 0.55); }
+.tree { position: absolute; font-size: 56px; line-height: 1; opacity: 0.85; }
+.tree-left { left: 12px; bottom: 170px; }
+.tree-right { right: 16px; bottom: 150px; font-size: 72px; }
+
+.hero { position: absolute; left: 50%; bottom: 40px; display: grid; justify-items: center; transform: translateX(-50%); }
+.hero-emoji { font-size: 96px; line-height: 1; animation: bounce 2.4s ease-in-out infinite; }
+.hero-shadow { width: 90px; height: 14px; margin-top: -6px; border-radius: 50%; background: rgba(var(--semantic-foreground-neutral-strong-rgb), 0.18); }
+.hero-name { margin-top: 6px; }
+.bubble {
+  position: relative; max-width: 240px; margin-bottom: 12px; padding: 10px 14px;
+  border-radius: var(--radius-12); text-align: center; background: var(--semantic-foreground-neutral-strong);
+}
+.bubble::after {
+  content: ""; position: absolute; left: 50%; bottom: -6px; width: 12px; height: 12px;
+  transform: translateX(-50%) rotate(45deg); background: inherit;
+}
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) { .hero-emoji { animation: none; } }
+
+/* 아래 시트 */
+.sheet {
+  position: relative; margin: -32px 12px 0; padding: 8px 4px 16px;
+  border-radius: var(--radius-24); background: var(--semantic-background-neutral-primary);
+  box-shadow: var(--semantic-elevation-shadow-normal-medium);
+}
+.sheet-panel { display: grid; gap: 16px; padding: 16px 12px 0; }
+.sheet-bar { position: relative; display: flex; align-items: center; padding-right: 20px; }
+.sheet-bar > :first-child { flex: 1; }
+.sheet-bar-icon {
+  position: absolute; right: 0; display: grid; place-items: center; width: 40px; height: 40px;
+  border-radius: 50%; font-size: 22px; background: var(--semantic-background-neutral-primary);
+  box-shadow: var(--semantic-elevation-shadow-normal-small);
+}
+.stat-list { display: grid; gap: 10px; margin: 0; }
+.stat-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.stat-row dd { margin: 0; text-align: right; }
+
+/* 시간대 카드 */
+.cards { display: grid; gap: 12px; }
+.card { display: grid; gap: 8px; padding: 16px; border: 1px solid var(--semantic-line-neutral-primary); border-radius: var(--radius-16); }
+.card.is-active { border-color: var(--semantic-line-brand-primary); background: rgba(var(--semantic-foreground-brand-primary-rgb), 0.04); }
+.card.is-folded { padding: 12px 16px; }
+.card.is-folded > summary { cursor: pointer; list-style: none; }
+.card.is-folded > summary::-webkit-details-marker { display: none; }
+.card.is-folded[open] > summary { margin-bottom: 8px; }
+.card-title { display: flex; align-items: center; gap: 8px; }
+.card-summary { margin-left: auto; }
+.card-body { display: grid; gap: 12px; }
+
+/* 기록 목록 */
+.meal-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.meal-item { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: var(--radius-12); background: var(--semantic-background-neutral-secondary); }
+.meal-item-text { display: grid; gap: 2px; flex: 1; min-width: 0; }
+.meal-remove { width: 32px; height: 32px; border: 0; border-radius: var(--radius-10); background: transparent; color: var(--semantic-foreground-neutral-tertiary); cursor: pointer; }
+
+/* 입력 폼 */
+.meal-form { display: grid; gap: 8px; }
+.meal-form-row { display: flex; gap: 8px; }
+.meal-form-input { flex: 1; min-width: 0; }
+.ratio-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.api-box { display: grid; gap: 6px; margin-top: 16px; padding: 16px 16px 32px; border-top: 1px solid var(--semantic-line-neutral-primary); }
+.api-list { margin: 0; padding-left: 18px; }
