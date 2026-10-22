@@ -7,8 +7,6 @@ import quizCard from "../assets/hub/quiz-card.png";
 import missionIcon from "../assets/hub/mission-icon.png";
 import missionCard from "../assets/hub/mission-card.png";
 import walkArt from "./walk/walk.svg";
-import whereamiIcon from "./whereami/art-icon.svg"; // CMG
-import whereamiCard from "./whereami/art-card.svg"; // CMG
 import samki from "./meals/samki.svg";
 import pokemonIcon from "./pokemon/assets/icon.png";
 import pokemonCard from "./pokemon/assets/card.png";
@@ -16,7 +14,7 @@ import pokemonCard from "./pokemon/assets/card.png";
 import QuizApp from "./quiz/index.jsx";
 import MissionApp from "./mission/index.jsx";
 import WalkApp from "./walk/index.jsx";
-import WhereamiApp from "./whereami/index.jsx"; // CMG
+import whereami from "./whereami/app.config.js"; // CMG (#9: 앱 설정은 앱 폴더에)
 import MealsApp from "./meals/index.jsx";
 import PokemonApp from "./pokemon/index.jsx";
 
@@ -93,20 +91,7 @@ export const MINI_APPS = [
     card: walkArt,
     Component: WalkApp,
   },
-  // CMG — 여기는 어디? (Windy Webcams 나라 맞히기)
-  {
-    id: "whereami",
-    name: "여기는 어디?",
-    category: "quiz",
-    tone: "sky",
-    summary: "웹캠 사진 보고 나라 맞히기",
-    catalog: "세계 곳곳 풍경 보고\n어느 나라인지 맞혀요",
-    cta: "맞히러 가기",
-    icon: whereamiIcon,
-    banner: whereamiCard,
-    card: whereamiCard,
-    Component: WhereamiApp,
-  },
+  whereami, // CMG
   {
     id: "pokemon",
     name: "포켓몬 퀴즈",
