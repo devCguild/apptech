@@ -1,0 +1,77 @@
+/* 포켓몬 실루엣 퀴즈 전용. 바탕·카드는 공용 index.css 변수(--page-bg, --card-bg, --radius), 간격은 Montage 토큰(--spacing-*), 무대(.pq-stage) 색만 직접 정한다 (PLAN.md 디자인) */
+/* 간격은 입구 화면(.page: 좌우 20px, 구역 사이 24~28px)과 리듬을 맞춘다 */
+/* 다른 미니앱처럼 연회색 바탕 위에 흰 카드를 올린다 */
+.pq { flex: 1; display: grid; align-content: start; gap: var(--spacing-24); padding: var(--spacing-24) var(--spacing-20) var(--spacing-32); background: var(--page-bg); }
+.pq-header { display: flex; align-items: baseline; justify-content: space-between; }
+.pq-form, .pq-result {
+  display: grid; gap: var(--spacing-12);
+  padding: var(--spacing-20); border-radius: var(--radius); background: var(--card-bg);
+}
+.pq-actions { display: grid; grid-template-columns: 1fr auto; gap: var(--spacing-12); }
+.pq-hint-row { display: grid; align-items: center; justify-items: start; }
+.pq-hint-row > * { grid-area: 1 / 1; }
+.pq-hint-row > .is-hidden { visibility: hidden; }
+.pq .pq-hint { display: inline-flex; align-items: center; gap: var(--spacing-4); }
+
+.pq-stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--spacing-16);
+  padding: var(--spacing-24) var(--spacing-20);
+  min-height: 300px;
+  border-radius: var(--radius-12);
+  overflow: hidden;
+  /* 경계가 딱 떨어지는 두 가지 파랑 단색 줄무늬 */
+  background: repeating-conic-gradient(from 0deg at 50% 60%, #2a4b9b 0deg 10deg, #3b6fd1 10deg 20deg);
+}
+
+.pq .pq-stage-title {
+  color: #ffcb05;
+  -webkit-text-stroke: 6px #2a4b9b;
+  paint-order: stroke fill;
+}
+
+.pq .pq-stage-status { color: #fff; align-self: center; }
+
+.pq-pokemon {
+  width: min(240px, 70%);
+  aspect-ratio: 1;
+  object-fit: contain;
+  user-select: none;
+  /* 검정 단색 실루엣 + 흰색 단색 외곽선 (번짐 없음) */
+  filter: brightness(0)
+    drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff)
+    drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff);
+}
+
+.pq-stage.is-revealed .pq-pokemon {
+  filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff)
+    drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff);
+}
+
+/* 정답 공개: 흰 화면이 한 번 번쩍한다 */
+.pq-flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  animation: pq-flash 0.4s steps(1, end);
+}
+
+@keyframes pq-flash {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.pq-shake { animation: pq-shake 0.3s; }
+
+@keyframes pq-shake {
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pq-flash, .pq-shake { animation: none; }
+}
