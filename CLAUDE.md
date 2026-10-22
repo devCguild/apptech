@@ -13,9 +13,10 @@
 - 담당: App.jsx 뼈대 = ___ · index.css = ___ · 아침 카드 = ___ · 점심 카드 = ___ · 저녁 카드 = ___ · 문구 = ___
 
 ## 앱 구조 규칙 🧩 (앱인토스 방식)
-- 입구에 보이는 미니앱 목록은 `src/apps/registry.js` 의 `MINI_APPS` 한 곳에서만 정한다(이름·카테고리·소개 문구·그림·컴포넌트). (왜: 홈·전체 앱·내 기록이 같은 목록을 씀) → 검사: 새 앱이 홈과 전체 앱에 둘 다 보임
+- 미니앱은 자기 폴더의 `app.config.js` 하나로 입구에 붙는다(`src/apps/<앱id>/app.config.js` 기본 내보내기: id·order·이름·카테고리·소개 문구·그림·Component 또는 href). `src/apps/registry.js` 가 자동으로 모으므로 고치지 않는다. 아직 안 옮긴 앱은 registry.js 의 `LISTED_APPS` 에 있고, 같은 id 는 app.config.js 가 이긴다. (왜: 앱 PR끼리 공용 파일에서 충돌하지 않게, 이슈 #9) → 검사: 새 앱 PR의 Files changed 가 자기 폴더뿐
 - 미니앱 하나 = `src/apps/<앱id>/` 폴더 하나(React, `index.jsx` 기본 내보내기) 또는 `public/<앱id>/` 독립 HTML 앱 하나(registry 에 `href`), 주인 한 명. 입구 화면(`src/pages/`, `src/components/`)은 PR로 먼저 말하고 고친다. (왜: 각자 컨셉이 달라도 서로 안 부딪힘) → 검사: PR의 Files changed가 내 앱 폴더 위주
 - 포인트는 `src/lib/points.js` 의 `addPoints(앱id, 점수, 이유)` 로만 준다. 잔액은 적립 기록을 더해서 계산하고 직접 고치지 않는다. (왜: 내 기록·홈 포인트가 한 기록을 봄) → 검사: 미니앱에서 포인트 주고 홈·내 기록 숫자가 같이 바뀜
+- 백엔드는 `backend/app/routers/<앱id>.py` 에 `router = APIRouter(prefix="/api/<앱id>")` 를 두면 `main.py` 가 자동으로 붙인다. 기존 앱을 옮길 때는 `main.py` 의 해당 import·include_router 두 줄만 지운다. API 경로는 바꾸지 않는다. (왜: 이슈 #9) → 검사: `pytest` 의 경로 유지 테스트 통과
 - 화면 이동은 `react-router` 의 HashRouter(`#/apps/<앱id>`). (왜: GitHub Pages·Vercel 둘 다 설정 없이 새로고침해도 열림) → 검사: 미니앱 화면에서 새로고침
 
 ## 시간대 규칙 ⏰
@@ -50,3 +51,4 @@
 
 ## 실수에서 배운 규칙
 <!-- - (10/22) (해라/하지 마라) ___ (왜: ___) → 검사: ___ -->
+- (10/22) 백엔드 주소는 `src/api.js` 의 `API_BASE` 로만 만들고 `import.meta.env` 를 다른 곳에서 직접 읽지 않는다. PR 병합 전에 `node --test src/lib/rewards.test.js` 를 돌린다. (왜: AI가 테스트 없이 병합한 PR의 `import.meta.env.VITE_…` 때문에 Pages 배포가 멈췄고, 운영 화면이 localhost:8000 을 불렀다) → 검사: 위 테스트 통과 + 배포된 화면 네트워크에 localhost 0건

@@ -4,11 +4,12 @@ import assert from "node:assert/strict";
 import { createRewardsClient } from "./rewards.js";
 
 const KEY = "daily3_rewards_session";
+const USER_ID = "00000000-0000-4000-8000-000000000001";
 const ready = { storage_ready: true, callback_ready: true, environment: "test", live_enabled: false };
 const session = (token = "unit-test-session") => ({
-  token, user_id: "unit-test-user", environment: "test", expires_at: "2099-01-01T00:00:00Z",
+  token, user_id: USER_ID, environment: "test", expires_at: "2099-01-01T00:00:00Z",
 });
-const wallet = { environment: "test", balance: 0, unit: "P", transactions: [] };
+const wallet = { environment: "test", user_id: USER_ID, balance: 0, unit: "P", transactions: [] };
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status });
 
 function storage(initial = null) {
@@ -56,6 +57,9 @@ test("parallel mounts share one in-flight account and wallet request", async () 
   assert.equal(a, b);
   assert.equal(calls.session, 1);
   assert.equal(calls.wallet, 1);
+  assert.equal(a.userId, USER_ID);
+  assert.equal(Object.hasOwn(a, "token"), false);
+  assert.equal(Object.hasOwn(a, "session"), false);
 });
 
 test("a valid saved account survives client recreation", async () => {
@@ -65,6 +69,13 @@ test("a valid saved account survives client recreation", async () => {
   assert.equal((await next.client.load()).kind, "wallet");
   assert.equal(next.calls.session, 0);
   assert.deepEqual(next.calls.tokens, ["Bearer unit-test-session"]);
+});
+
+test("native USN comes from the authenticated wallet even if saved metadata was altered", async () => {
+  const { client, calls } = harness({ initial: JSON.stringify({ ...session(), user_id: "altered-cache" }) });
+  const result = await client.load();
+  assert.equal(result.userId, USER_ID);
+  assert.equal(calls.session, 0);
 });
 
 test("expired saved account is replaced using server expiry", async () => {
@@ -123,6 +134,7 @@ test("wrong environment and malformed ledger responses are rejected", async () =
   for (const value of [
     { ...wallet, environment: "live" },
     { ...wallet, balance: "0" },
+    { ...wallet, user_id: "invalid-user-id" },
     { ...wallet, transactions: [{ id: "a", amount: 1, campaign_key: "campaign", created_at: "invalid" }] },
   ]) {
     const { client } = harness({ onWallet: () => json(value) });

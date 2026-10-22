@@ -6,3 +6,10 @@ node_modules/
 dist/
 .pytest_cache/
 backend/var/
+android/.gradle/
+android/**/build/
+android/local.properties
+android/adpopcorn.properties
+android/key.properties
+android/**/*.jks
+android/**/*.keystore

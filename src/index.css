@@ -66,6 +66,12 @@ a { color: inherit; text-decoration: none; }
 .app-row-chevron { color: #a1a5ad; }
 
 /* 전체 앱 */
+.apps-header {
+  position: sticky; top: 0; z-index: 5;
+  margin: -16px -20px 0; padding: 16px 20px 0;
+  background: var(--page-bg);
+}
+.apps-header .page-title { margin-top: 0; }
 .chips { display: flex; gap: 8px; margin: 16px 0 20px; flex-wrap: wrap; }
 /* 시안: 고른 칩은 브랜드 파랑 바탕 + 흰 글자 (Montage 기본은 연한 브랜드색) */
 .chips button[data-active='true'] { background-color: #0066ff; color: #fff; }

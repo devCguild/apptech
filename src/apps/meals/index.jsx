@@ -46,11 +46,13 @@ export default function App() {
 
   // 기록하면 포인트를 주고, 캐릭터가 방금 먹은 음식에 반응한다 (가장 영향이 큰 음식 기준)
   const addMeal = (s, items) => {
-    update({ ...meals, [s]: [...meals[s], ...items] });
-    giveMealPoint(TIME_SLOTS[s].label, today);
+    const next = { ...meals, [s]: [...meals[s], ...items] };
+    update(next);
+    const given = giveMealPoint(TIME_SLOTS[s].label, today, rewardOf(next).complete);
     setPoints(mealPointTotal());
     const top = [...items].sort((a, b) => Math.abs(HEALTH[b.health].delta) - Math.abs(HEALTH[a.health].delta))[0];
-    setMessage(HEALTH[top.health].say(top.name));
+    const earned = [given.meal && `+${given.meal}P`, given.bonus && `삼시 완성 보너스 +${given.bonus}P`].filter(Boolean);
+    setMessage([HEALTH[top.health].say(top.name), ...earned].join(" · "));
   };
 
   // 지난 날 기록 + 오늘 기록으로 캐릭터 경험치·체형 계산

@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from app import webcam_quiz
+from app.routers import whereami as webcam_quiz
 from app.main import app
 
 client = TestClient(app)

@@ -1,0 +1,29 @@
+/* 오늘의 퀴즈 전용 스타일. Montage 시멘틱 토큰(--semantic-*)과 8px 간격 체계를 따른다 */
+.quiz {
+  flex: 1; display: flex; flex-direction: column; gap: 16px;
+  padding: 16px 20px 40px; background: var(--semantic-background-neutral-secondary);
+}
+
+/* 카드: 배경과 구분되는 Background-Neutral-Primary + Shadow Normal XSmall */
+.quiz-card {
+  background: var(--semantic-background-neutral-primary); border-radius: 20px; padding: 24px 20px;
+  display: flex; flex-direction: column; gap: 16px; box-shadow: var(--semantic-elevation-shadow-normal-xsmall);
+}
+.quiz-hero { background: var(--semantic-surface-brand-subtle); box-shadow: none; gap: 4px; }
+.quiz-points { display: flex; align-items: baseline; gap: 8px; margin-top: 8px; }
+
+.quiz-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.quiz-slot {
+  display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px;
+  border-radius: 16px; border: 1px solid var(--semantic-line-neutral-primary);
+}
+.quiz-slot[data-state="now"] { border: 2px solid var(--semantic-line-brand-primary); background: var(--semantic-surface-brand-subtle); }
+.quiz-slot[data-state="missed"] { background: var(--semantic-surface-disable-primary); }
+
+.quiz-cats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.quiz-cats > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+.quiz-choices { display: grid; gap: 8px; }
+
+.quiz-done { gap: 0; padding-top: 32px; }
+.quiz-emoji { font-size: 64px; line-height: 1; text-align: center; }
+.quiz-popup-body { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; padding-top: 8px; }
