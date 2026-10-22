@@ -1,34 +1,26 @@
 import { Button, Chip, FlexBox, SectionMessage, Typography } from "@montage-ui/core";
 import { useEffect, useState } from "react";
 
-import { loadSeoulParks } from "../api.js";
-import { distanceMeters, formatDistance, parksWithin, pickTodaySpot, todayKST } from "../utils/geo.js";
+import { API, loadSeoulParks } from "../../api.js";
+import { addPoints, readPointEvents } from "../../lib/points.js";
+import { kstDate, readJson, writeJson } from "../../lib/storage.js";
+import { distanceMeters, formatDistance, parksWithin, pickTodaySpot } from "./geo.js";
 
+const APP_ID = "walk"; // registry.js 의 id
 const CITY_HALL = { lat: 37.5665, lng: 126.978 }; // 위치를 못 받을 때 기준 (서울시청)
 const NEARBY_METERS = 2000;
 const VERIFY_METERS = 100;
 const VISIT_POINTS = 100;
 
-// 💾 기록 (CLAUDE.md 기록 규칙: daily3_ 이름, try-catch)
-const POINTS_KEY = "daily3_walk_points";
+// 💾 기록 (CLAUDE.md 기록 규칙: daily3_ 이름, 읽기·쓰기는 lib/storage.js 의 try-catch)
 const VISITS_KEY = "daily3_walk_visits"; // ["YYYY-MM-DD|공원명", ...]
 const SPOT_KEY = "daily3_walk_spot"; // { date, park } 오늘 정해진 스팟 (걸어가도 바뀌지 않게)
 
-function readJSON(name, fallback) {
-  try {
-    const raw = localStorage.getItem(name);
-    return raw === null ? fallback : JSON.parse(raw);
-  } catch {
-    return fallback;
-  }
-}
-
-function writeJSON(name, value) {
-  try {
-    localStorage.setItem(name, JSON.stringify(value));
-  } catch {
-    // 저장이 막힌 곳(시크릿 창 등)에서는 이번 화면에서만 유지된다
-  }
+// 산책으로 모은 포인트 (잔액은 적립 기록을 더해서 계산)
+function walkPoints() {
+  return readPointEvents()
+    .filter((e) => e.appId === APP_ID)
+    .reduce((sum, e) => sum + e.amount, 0);
 }
 
 // 브라우저 위치 한 번 받기
@@ -47,15 +39,15 @@ function getPosition() {
   });
 }
 
-// 점심 카드: 오늘의 산책 스팟
-export default function WalkSpot() {
-  const today = todayKST();
+// 산책 스팟 미니앱: 2km 안 오늘의 공원에 가서 방문 인증
+export default function App() {
+  const today = kstDate();
   const [location, setLocation] = useState({ status: "loading", coords: CITY_HALL, message: "" });
   const [parks, setParks] = useState({ status: "loading" });
-  const [points, setPoints] = useState(() => readJSON(POINTS_KEY, 0));
-  const [visits, setVisits] = useState(() => readJSON(VISITS_KEY, []));
+  const [points, setPoints] = useState(walkPoints);
+  const [visits, setVisits] = useState(() => readJson(VISITS_KEY, []));
   const [verify, setVerify] = useState({ status: "idle", message: "" });
-  const [savedSpot, setSavedSpot] = useState(() => readJSON(SPOT_KEY, null));
+  const [savedSpot, setSavedSpot] = useState(() => readJson(SPOT_KEY, null));
 
   useEffect(() => {
     getPosition()
@@ -77,7 +69,7 @@ export default function WalkSpot() {
     const { name, address, lat, lng } = todayPark;
     const next = { date: today, park: { name, address, lat, lng } };
     setSavedSpot(next);
-    writeJSON(SPOT_KEY, next);
+    writeJson(SPOT_KEY, next);
   }, [fixedPark, todayPark, location.status, parks.isMock, today]);
   const alreadyVisited = visits.includes(visitId);
 
@@ -100,22 +92,21 @@ export default function WalkSpot() {
     if (visits.includes(visitId)) return;
 
     const nextVisits = [...visits, visitId];
-    const nextPoints = points + VISIT_POINTS;
     setVisits(nextVisits);
-    setPoints(nextPoints);
-    writeJSON(VISITS_KEY, nextVisits);
-    writeJSON(POINTS_KEY, nextPoints);
+    writeJson(VISITS_KEY, nextVisits);
+    addPoints(APP_ID, VISIT_POINTS, `${spot.name} 방문 인증`); // 홈·내 기록 포인트에 같이 잡힘
+    setPoints(walkPoints());
     setVerify({ status: "done", message: `+${VISIT_POINTS}P 인증 완료` });
   }
 
   return (
-    <FlexBox flexDirection="column" gap="12px" sx={{ marginTop: "8px" }}>
+    <FlexBox flexDirection="column" gap="12px" sx={{ padding: "8px 20px 32px" }}>
       <FlexBox justifyContent="space-between" alignItems="center" gap="8px">
-        <Typography as="h3" variant="headline2" weight="bold" color="semantic.foreground.neutral.strong">
+        <Typography as="h2" variant="headline2" weight="bold" color="semantic.foreground.neutral.strong">
           🌳 오늘의 산책 스팟
         </Typography>
         <Chip size="small" variant="outlined" disableInteraction>
-          내 포인트 {points}P
+          산책 포인트 {points}P
         </Chip>
       </FlexBox>
 
@@ -210,10 +201,19 @@ export default function WalkSpot() {
         </FlexBox>
       )}
 
-      <Typography variant="caption1" color="semantic.foreground.neutral.tertiary">
-        출처: 공공데이터포털 「전국도시공원정보표준데이터」
-        {parks.referenceDate ? ` · 데이터 기준일 ${parks.referenceDate}` : ""} · 인증 기록 날짜 {today}
-      </Typography>
+      {/* 🔌 이 화면이 쓰는 API (CLAUDE.md API 화면 규칙: 맨 아래에 주소·원본 JSON·출처) */}
+      <FlexBox flexDirection="column" gap="2px" sx={{ marginTop: "12px" }}>
+        <Typography variant="label2" weight="bold" color="semantic.foreground.neutral.secondary">
+          🔌 이 화면이 쓰는 API
+        </Typography>
+        <Typography variant="caption1" color="semantic.foreground.neutral.tertiary">
+          서울 공원 (원본 JSON): <a href={API.parks}>{API.parks}</a>
+        </Typography>
+        <Typography variant="caption1" color="semantic.foreground.neutral.tertiary">
+          출처: 공공데이터포털 「전국도시공원정보표준데이터」
+          {parks.referenceDate ? ` · 데이터 기준일 ${parks.referenceDate}` : ""} · 인증 기록 날짜 {today}
+        </Typography>
+      </FlexBox>
     </FlexBox>
   );
 }
