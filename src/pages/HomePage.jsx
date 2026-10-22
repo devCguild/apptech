@@ -1,15 +1,15 @@
 import { Button, Typography } from "@montage-ui/core";
 import { IconChevronRight } from "@montage-ui/icon";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 
 import coins from "../assets/hub/coins.png";
 import { MINI_APPS, findMiniApp } from "../apps/registry.js";
+import AppLink from "../components/AppLink.jsx";
 import AppRow from "../components/AppRow.jsx";
 import { pointTotals } from "../lib/points.js";
 import { readRecentAppId } from "../lib/recent.js";
 
 export default function HomePage() {
-  const navigate = useNavigate();
   const { total, today } = pointTotals();
   const featured = findMiniApp(readRecentAppId()) ?? MINI_APPS[0];
   const others = MINI_APPS.filter((app) => app.id !== featured.id);
@@ -49,15 +49,17 @@ export default function HomePage() {
           <Typography variant="body2" color="semantic.foreground.neutral.secondary" className="keep-lines">
             {featured.summary}
           </Typography>
-          <Button
-            variant="solid"
-            size="medium"
-            className={`feature-card-cta cta-${featured.tone}`}
-            trailingContent={<IconChevronRight />}
-            onClick={() => navigate(`/apps/${featured.id}`)}
-          >
-            {featured.cta}
-          </Button>
+          <AppLink app={featured} className="feature-card-cta-link">
+            <Button
+              as="span"
+              variant="solid"
+              size="medium"
+              className={`feature-card-cta cta-${featured.tone}`}
+              trailingContent={<IconChevronRight />}
+            >
+              {featured.cta}
+            </Button>
+          </AppLink>
         </div>
         <img className="feature-card-art" src={featured.banner} alt="" />
       </section>

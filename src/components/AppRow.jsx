@@ -1,11 +1,12 @@
 import { Typography } from "@montage-ui/core";
 import { IconChevronRight } from "@montage-ui/icon";
-import { Link } from "react-router";
+
+import AppLink from "./AppLink.jsx";
 
 // 홈 "다른 앱도 둘러보세요" 한 줄
 export default function AppRow({ app }) {
   return (
-    <Link to={`/apps/${app.id}`} className="app-row">
+    <AppLink app={app} className="app-row">
       <img className={`app-row-icon tone-${app.tone}`} src={app.icon} alt="" />
       <span className="app-row-text">
         <Typography variant="headline2" weight="bold" color="semantic.foreground.neutral.strong">
@@ -16,6 +17,6 @@ export default function AppRow({ app }) {
         </Typography>
       </span>
       <IconChevronRight className="app-row-chevron" />
-    </Link>
+    </AppLink>
   );
 }
