@@ -1,16 +1,23 @@
 // 앱 입구에 보이는 미니앱 목록은 여기 한 곳에서만 정한다 (CLAUDE.md 앱 구조 규칙)
+// 미니앱은 React 컴포넌트(Component) 또는 독립 HTML 앱 주소(href) 중 하나
 import petBanner from "../assets/hub/pet-banner.png";
 import petCard from "../assets/hub/pet-card.png";
 import quizIcon from "../assets/hub/quiz-icon.png";
 import quizCard from "../assets/hub/quiz-card.png";
 import missionIcon from "../assets/hub/mission-icon.png";
 import missionCard from "../assets/hub/mission-card.png";
+import walkArt from "./walk/walk.svg";
+import whereamiIcon from "./whereami/art-icon.svg"; // CMG
+import whereamiCard from "./whereami/art-card.svg"; // CMG
+import samki from "./meals/samki.svg";
 import pokemonIcon from "./pokemon/assets/icon.png";
 import pokemonCard from "./pokemon/assets/card.png";
 
-import MoapetApp from "./moapet/index.jsx";
 import QuizApp from "./quiz/index.jsx";
 import MissionApp from "./mission/index.jsx";
+import WalkApp from "./walk/index.jsx";
+import WhereamiApp from "./whereami/index.jsx"; // CMG
+import MealsApp from "./meals/index.jsx";
 import PokemonApp from "./pokemon/index.jsx";
 
 export const CATEGORIES = [
@@ -32,7 +39,7 @@ export const MINI_APPS = [
     icon: petCard,
     banner: petBanner,
     card: petCard,
-    Component: MoapetApp,
+    href: `${import.meta.env.BASE_URL}moapet/`, // 독립 HTML 앱 (public/moapet/)
   },
   {
     id: "quiz",
@@ -59,6 +66,46 @@ export const MINI_APPS = [
     banner: missionCard,
     card: missionCard,
     Component: MissionApp,
+  },
+  {
+    id: "meals",
+    name: "삼시삼키",
+    category: "pet",
+    tone: "peach",
+    summary: "세 끼 기록하고\n삼키 키우기",
+    catalog: "먹은 만큼\n삼키가 달라져요",
+    cta: "밥 기록하러 가기",
+    icon: samki,
+    banner: samki,
+    card: samki,
+    Component: MealsApp,
+  },
+  {
+    id: "walk",
+    name: "산책 스팟",
+    category: "mission",
+    tone: "green",
+    summary: "가까운 공원 걷고 100P",
+    catalog: "오늘의 공원까지\n걸어가요",
+    cta: "산책 스팟 보기",
+    icon: walkArt,
+    banner: walkArt,
+    card: walkArt,
+    Component: WalkApp,
+  },
+  // CMG — 여기는 어디? (Windy Webcams 나라 맞히기)
+  {
+    id: "whereami",
+    name: "여기는 어디?",
+    category: "quiz",
+    tone: "sky",
+    summary: "웹캠 사진 보고 나라 맞히기",
+    catalog: "세계 곳곳 풍경 보고\n어느 나라인지 맞혀요",
+    cta: "맞히러 가기",
+    icon: whereamiIcon,
+    banner: whereamiCard,
+    card: whereamiCard,
+    Component: WhereamiApp,
   },
   {
     id: "pokemon",
