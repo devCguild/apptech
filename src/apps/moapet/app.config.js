@@ -1,6 +1,7 @@
-// 모아펫: 독립 HTML 앱(public/moapet/). 이 파일 하나로 입구(홈·전체 앱)에 붙는다
+// 모아펫: 독립 HTML 앱(public/moapet/)을 미니앱 틀 안에 띄운다. 이 파일 하나로 입구(홈·전체 앱)에 붙는다
 import petBanner from "../../assets/hub/pet-banner.png";
 import petCard from "../../assets/hub/pet-card.png";
+import MoapetApp from "./index.jsx";
 
 export default {
   id: "moapet",
@@ -14,5 +15,5 @@ export default {
   icon: petCard,
   banner: petBanner,
   card: petCard,
-  href: `${import.meta.env.BASE_URL}moapet/`,
+  Component: MoapetApp,
 };

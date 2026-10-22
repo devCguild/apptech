@@ -31,6 +31,6 @@ export const MISSIONS = [
     description: "모아펫에 다녀오면 보상을 받을 수 있어요",
     reward: 5,
     kind: "visit",
-    href: `${import.meta.env.BASE_URL}moapet/`,
+    href: `${import.meta.env.BASE_URL}#/apps/moapet`,
   },
 ];
