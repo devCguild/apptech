@@ -29,7 +29,7 @@
 }
 .whereami-photo {
   width: 100%; aspect-ratio: 16 / 10; object-fit: cover;
-  border-radius: 14px; background: #eef1f4;
+  border-radius: 14px; background: #eef1f4; border: 0; display: block;
 }
 .whereami-photo.is-empty {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;

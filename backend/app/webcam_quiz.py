@@ -46,6 +46,13 @@ def sign(country_code: str) -> str:
     return hmac.new(_key().encode(), country_code.encode(), hashlib.sha256).hexdigest()
 
 
+def _autoplay(player_url: str | None) -> str | None:
+    # Windy 플레이어 쿼리: autoplay·loop = 열리자마자 반복 재생, interactive=0 = 재생 막대·버튼 숨김
+    if not player_url:
+        return None
+    return f"{player_url}?{urllib.parse.urlencode({'autoplay': 1, 'loop': 1, 'interactive': 0})}"
+
+
 class Answer(BaseModel):
     token: str
     guess: str
@@ -74,6 +81,8 @@ def question():
     random.shuffle(codes)
     return {
         "image": picked["images"]["current"]["preview"],
+        # 최근 24시간 타임랩스 플레이어(iframe 주소). 없는 웹캠도 있어서 없으면 None
+        "timelapse": _autoplay(picked.get("player", {}).get("day")),
         "title": picked.get("title", ""),
         "options": [{"code": code, "name": names[code]} for code in codes],
         "token": sign(answer),

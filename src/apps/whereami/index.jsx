@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Button, Typography } from "@montage-ui/core";
+import { Button, SegmentedControl, SegmentedControlItem, Typography } from "@montage-ui/core";
 import { IconChevronRight } from "@montage-ui/icon";
 
 import { API } from "../../api.js";
@@ -16,10 +16,9 @@ const STATS_KEY = "daily3_whereami_stats"; // { solved, correct, streak }
 const emptyStats = { solved: 0, correct: 0, streak: 0 };
 
 // 백엔드는 영어 나라 이름을 주므로 나라 코드로 한국어 이름을 만든다
-const koNames = new Intl.DisplayNames(["ko"], { type: "region" });
 const countryName = (o) => {
   try {
-    return koNames.of(o.code) ?? o.name;
+    return new Intl.DisplayNames(["ko"], { type: "region" }).of(o.code) ?? o.name;
   } catch {
     return o.name;
   }
@@ -30,6 +29,7 @@ export default function App() {
   const [status, setStatus] = useState("loading"); // loading | ready | error
   const [result, setResult] = useState(null); // { guess, correct }
   const [checking, setChecking] = useState(false);
+  const [view, setView] = useState("timelapse"); // timelapse | photo
   const [stats, setStats] = useState(() => ({ ...emptyStats, ...readJson(STATS_KEY, emptyStats) }));
 
   const load = useCallback(() => {
@@ -113,9 +113,25 @@ export default function App() {
 
         {status === "ready" && question && (
           <>
-            <img className="whereami-photo" src={question.image} alt="어느 나라인지 맞혀 보세요" />
+            {question.timelapse && (
+              <SegmentedControl size="small" value={view} onValueChange={setView}>
+                <SegmentedControlItem value="timelapse">24시간 타임랩스</SegmentedControlItem>
+                <SegmentedControlItem value="photo">지금 사진</SegmentedControlItem>
+              </SegmentedControl>
+            )}
+            {question.timelapse && view === "timelapse" ? (
+              <iframe
+                key={question.timelapse}
+                className="whereami-photo"
+                src={question.timelapse}
+                title="웹캠 24시간 타임랩스"
+                allow="autoplay; fullscreen"
+              />
+            ) : (
+              <img className="whereami-photo" src={question.image} alt="어느 나라인지 맞혀 보세요" />
+            )}
             <Typography as="h3" variant="headline1" weight="bold" color="semantic.foreground.neutral.strong">
-              이 사진은 어느 나라일까요?
+              이 웹캠은 어느 나라일까요?
             </Typography>
             <div className="whereami-options">
               {question.options.map((o) => (

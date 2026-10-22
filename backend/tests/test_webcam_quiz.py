@@ -14,6 +14,7 @@ def fake_webcams(offset=0):
                 "title": f"cam {code}",
                 "location": {"country_code": code, "country": name},
                 "images": {"current": {"preview": f"https://img/{code}.jpg"}},
+                "player": {"day": f"https://player/{code}/day"},
             }
             for code, name in [("KR", "Korea"), ("JP", "Japan"), ("FR", "France"), ("IT", "Italy")]
         ],
@@ -27,6 +28,8 @@ def test_question_and_answer(monkeypatch):
     q = client.get("/api/webcam-quiz/question").json()
     assert len(q["options"]) == 4
     assert "correct" not in q
+    assert q["timelapse"].startswith("https://player/")
+    assert "autoplay=1" in q["timelapse"] and "interactive=0" in q["timelapse"]
 
     right = next(o["code"] for o in q["options"] if webcam_quiz.sign(o["code"]) == q["token"])
     wrong = next(o["code"] for o in q["options"] if o["code"] != right)
