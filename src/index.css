@@ -45,7 +45,7 @@ a { color: inherit; text-decoration: none; }
   border-radius: var(--radius); padding: 24px;
 }
 .feature-card-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 6px; max-width: 55%; }
-.feature-card-cta { margin-top: 16px; align-self: flex-start; }
+.feature-card-cta-link { margin-top: 16px; align-self: flex-start; }
 .cta-green { background: var(--cta-green) !important; }
 .cta-blue { background: var(--cta-blue) !important; }
 .cta-peach { background: var(--cta-peach) !important; }
