@@ -12,7 +12,6 @@ from fastapi.responses import JSONResponse
 
 from app.parks import router as parks_router
 from app.routers import discover_routers
-from app.webcam_quiz import router as webcam_quiz_router
 from app.config import Settings
 from app.storage import (
     DuplicateReward,
@@ -79,7 +78,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_headers=["*"],
     )
 
-    api.include_router(webcam_quiz_router)
     api.include_router(parks_router)
     # app/routers/<앱id>.py 의 router 자동 등록 (이슈 #9). 위 두 줄은 해당 앱이 옮기면 지운다
     for router in discover_routers():
