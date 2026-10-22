@@ -35,5 +35,12 @@
 - UI는 원티드 디자인 시스템 Montage(`@montage-ui/core`)의 컴포넌트를 먼저 쓴다(글자는 `Typography`, 버튼은 `Button`, 선택은 `SegmentedControl`·`Chip`). 직접 만든 색·글자 크기 대신 Montage 토큰(`semantic.foreground...`)을 쓴다. (왜: 화면마다 모양이 달라지지 않게) → 검사: 새 컴포넌트가 `@montage-ui/core` 를 import
 - React + Vite. 화면 조각은 `src/components/` 의 컴포넌트 파일 하나에 주인 한 명, 공용 스타일은 `src/index.css`. 확인은 `npm install` 후 `npm run dev`, main에 머지되면 GitHub Actions가 Pages에 배포한다. (왜: 파일 단위로 나눠야 충돌이 적고, 배포는 사람이 안 해도 됨) → 검사: `npm run build` 성공 + PR 머지 후 Actions 초록불
 
+## 백엔드 규칙 🐍 (FastAPI, `backend/`)
+- 백엔드는 `backend/` 안에서만 고친다. 진입점은 `backend/app/main.py` 의 `app`, API 주소는 모두 `/api/` 로 시작한다. (왜: Vercel 이 이 파일을 자동으로 찾고, 프론트 주소와 안 겹치게) → 검사: `uvicorn app.main:app --reload` 후 `/docs` 에 보임
+- 실행: `cd backend` → `python -m venv .venv` → `.venv/bin/pip install -r requirements-dev.txt` → `.venv/bin/uvicorn app.main:app --reload` (Windows는 `.venv\Scripts\`). 배포에 필요한 패키지는 `requirements.txt`, 개발·테스트용은 `requirements-dev.txt`. (왜: 배포 묶음을 작게) → 검사: 새 import 가 requirements 에 있음
+- 키·비밀값은 `backend/.env` 에만, 레포에는 `backend/.env.example` 에 이름만. Vercel 에서는 프로젝트 Settings → Environment Variables. (왜: 레포는 공개) → 검사: 레포에서 `.env` 검색 0건
+- 이 API 를 부를 프론트 주소는 `ALLOWED_ORIGINS` 환경 변수로만 연다. `*` 로 다 열지 않는다. (왜: 아무 사이트나 우리 API 를 부르지 못하게) → 검사: `pytest` 의 CORS 테스트 통과
+- 엔드포인트를 만들면 `backend/tests/` 에 테스트 1개 이상. (왜: PR 때 Actions 가 자동으로 돌림) → 검사: `.venv/bin/python -m pytest` 통과
+
 ## 실수에서 배운 규칙
 <!-- - (10/22) (해라/하지 마라) ___ (왜: ___) → 검사: ___ -->

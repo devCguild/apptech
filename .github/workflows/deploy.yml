@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "backend/**"
+      - ".github/workflows/backend.yml"
   workflow_dispatch:
 
 permissions:
@@ -25,6 +28,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          BASE_PATH: /apptech/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
