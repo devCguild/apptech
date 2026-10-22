@@ -14,7 +14,7 @@
 
 ## 앱 구조 규칙 🧩 (앱인토스 방식)
 - 입구에 보이는 미니앱 목록은 `src/apps/registry.js` 의 `MINI_APPS` 한 곳에서만 정한다(이름·카테고리·소개 문구·그림·컴포넌트). (왜: 홈·전체 앱·내 기록이 같은 목록을 씀) → 검사: 새 앱이 홈과 전체 앱에 둘 다 보임
-- 미니앱 하나 = `src/apps/<앱id>/` 폴더 하나, 주인 한 명. 시작 파일은 `index.jsx` 의 기본 내보내기. 입구 화면(`src/pages/`, `src/components/`)은 PR로 먼저 말하고 고친다. (왜: 각자 컨셉이 달라도 서로 안 부딪힘) → 검사: PR의 Files changed가 내 앱 폴더 위주
+- 미니앱 하나 = `src/apps/<앱id>/` 폴더 하나(React, `index.jsx` 기본 내보내기) 또는 `public/<앱id>/` 독립 HTML 앱 하나(registry 에 `href`), 주인 한 명. 입구 화면(`src/pages/`, `src/components/`)은 PR로 먼저 말하고 고친다. (왜: 각자 컨셉이 달라도 서로 안 부딪힘) → 검사: PR의 Files changed가 내 앱 폴더 위주
 - 포인트는 `src/lib/points.js` 의 `addPoints(앱id, 점수, 이유)` 로만 준다. 잔액은 적립 기록을 더해서 계산하고 직접 고치지 않는다. (왜: 내 기록·홈 포인트가 한 기록을 봄) → 검사: 미니앱에서 포인트 주고 홈·내 기록 숫자가 같이 바뀜
 - 화면 이동은 `react-router` 의 HashRouter(`#/apps/<앱id>`). (왜: GitHub Pages·Vercel 둘 다 설정 없이 새로고침해도 열림) → 검사: 미니앱 화면에서 새로고침
 
