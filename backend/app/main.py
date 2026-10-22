@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.parks import router as parks_router
+from app.webcam_quiz import router as webcam_quiz_router
 
 app = FastAPI(title="apptech API")
 
@@ -22,6 +23,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+app.include_router(webcam_quiz_router)
 
 
 @app.get("/api/health")

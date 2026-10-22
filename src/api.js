@@ -1,6 +1,10 @@
 // 🔌 API 주소는 여기 한 곳에서만 정한다 (CLAUDE.md API 화면 규칙)
 export const API = {
   parks: `${import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000"}/api/parks`, // 🔌 서울 공원 (우리 백엔드 → 공공데이터포털)
+  // ---- CMG (webcam-quiz) ----
+  webcamQuestion: `${import.meta.env.VITE_API_BASE ?? "http://localhost:8000"}/api/webcam-quiz/question`, // 🔌 Windy Webcams (백엔드 경유)
+  webcamAnswer: `${import.meta.env.VITE_API_BASE ?? "http://localhost:8000"}/api/webcam-quiz/answer`, // 🔌 정답 확인
+  // ---- /CMG ----
 };
 
 // ── 오늘의 산책 스팟 (점심) ──────────────────────────────
