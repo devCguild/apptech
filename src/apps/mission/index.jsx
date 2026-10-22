@@ -4,6 +4,7 @@ import { useState } from "react";
 import { TIME_SLOTS, currentTimeSlot } from "../../timeSlots.js";
 import { MISSIONS, MISSION_SOURCES } from "./missions.js";
 import { completeMission, markVisited, readMissionProgress } from "./progress.js";
+import AdRewardWallet from "./AdRewardWallet.jsx";
 import "./mission.css";
 
 // 미션 모으기: 미션을 수행하면 하루 한 번 포인트를 받는다 (포인트는 lib/points.js)
@@ -62,7 +63,7 @@ export default function App() {
       <Typography as="h2" variant="headline1" weight="bold" className="mission-section">
         {MISSION_SOURCES.adpopcorn.label}
       </Typography>
-      <p className="mission-pending">{MISSION_SOURCES.adpopcorn.note}</p>
+      <AdRewardWallet />
     </div>
   );
 }
