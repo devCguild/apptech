@@ -1,4 +1,4 @@
-import { addPoints as addPointEvent, pointTotals } from "../../lib/points.js";
+import { addPoints as addPointEvent, pointTotals } from "../../../lib/points.js";
 
 // 포인트 저장 위치는 이 파일에서만 정한다.
 // 팀 공통 적립 기록(lib/points.js)에 쌓아서 홈·내 기록 포인트와 같이 움직인다.

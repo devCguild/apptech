@@ -1,15 +1,11 @@
-import { Button, SectionMessage, TextButton, TextField, Typography } from "@montage-ui/core";
-import { IconBulb } from "@montage-ui/icon";
-import { memo, useEffect, useRef, useState } from "react";
+import { Button, SectionMessage, Typography } from "@montage-ui/core";
+import { useEffect, useState } from "react";
 
-import { fetchPokemon, peekPokemon, preloadPokemon } from "./pokeapi.js";
-import {
-  POINTS_PER_QUIZ,
-  firstLetterHint,
-  isCorrect,
-  randomPokemonId,
-} from "./quiz.js";
-import { addPoints, getPoints } from "./storage.js";
+import QuizForm from "./components/QuizForm.jsx";
+import QuizStage from "./components/QuizStage.jsx";
+import { fetchPokemon, peekPokemon, preloadPokemon } from "./lib/pokeapi.js";
+import { POINTS_PER_QUIZ, randomPokemonId } from "./lib/quiz.js";
+import { addPoints, getPoints } from "./lib/storage.js";
 import "./PokemonQuiz.css";
 
 function firstIds() {
@@ -121,118 +117,5 @@ export default function PokemonQuiz() {
         포인트는 연습용이에요. 현금이나 실제 보상으로 바꿀 수 없어요.
       </Typography>
     </section>
-  );
-}
-
-// 실루엣 무대. 문제나 공개 여부가 바뀔 때만 다시 그린다 (입력할 때는 그리지 않음)
-const QuizStage = memo(function QuizStage({ pokemon, answer, revealed }) {
-  return (
-    <div className={`pq-stage${revealed ? " is-revealed" : ""}`}>
-      <Typography as="p" variant="title2" weight="bold" className="pq-stage-title">
-        {revealed ? `정답은 ${answer}!` : "이건 누구일까?"}
-      </Typography>
-      {pokemon ? (
-        <img
-          className="pq-pokemon"
-          src={pokemon.imageUrl}
-          alt={revealed ? answer : "이름을 맞혀 볼 포켓몬의 실루엣"}
-          draggable={false}
-        />
-      ) : (
-        <Typography variant="body1" className="pq-stage-status">
-          불러오는 중…
-        </Typography>
-      )}
-      {/* 공개될 때만 붙는 레이어라 붙을 때마다 번쩍임이 한 번 재생된다. 이미지는 그대로 둔다 */}
-      {revealed && <div className="pq-flash" aria-hidden />}
-    </div>
-  );
-});
-
-// 이름 입력·힌트·제출. 입력값은 여기서만 들고 있어서 글자를 쳐도 무대는 다시 그리지 않는다.
-// 문제가 바뀌면 부모가 key를 바꿔 입력값·힌트를 초기화한다.
-function QuizForm({ pokemon, answer, onCorrect, onGiveUp, autoFocus }) {
-  const [guess, setGuess] = useState("");
-  const [wrong, setWrong] = useState(false);
-  const [shaking, setShaking] = useState(false);
-  const [hintShown, setHintShown] = useState(false);
-  const inputRef = useRef(null);
-
-  // 다음 문제로 넘어왔으면 포켓몬이 준비되는 대로 입력칸에 포커스 (불러오는 동안은 입력칸이 비활성)
-  useEffect(() => {
-    if (autoFocus && pokemon) inputRef.current?.focus();
-  }, [autoFocus, pokemon]);
-
-  // 이름이 한 글자면 첫 글자가 곧 정답이라 힌트를 주지 않는다
-  const canHint = answer && Array.from(answer).length > 1;
-
-  function submit(event) {
-    event.preventDefault();
-    if (!pokemon) return;
-    if (isCorrect(guess, pokemon.names)) {
-      onCorrect();
-    } else {
-      setWrong(true);
-      setShaking(true);
-    }
-  }
-
-  return (
-    <form className="pq-form" onSubmit={submit}>
-      {canHint && (
-        // 버튼과 힌트를 같은 칸에 겹쳐 두고 보이기만 바꾼다. 높이가 달라 입력칸이 움직이지 않게
-        <div className="pq-hint-row">
-          <TextButton
-            type="button"
-            size="small"
-            color="assistive"
-            leadingContent={<IconBulb aria-hidden />}
-            onClick={() => setHintShown(true)}
-            className={hintShown ? "is-hidden" : undefined}
-            aria-hidden={hintShown}
-            tabIndex={hintShown ? -1 : undefined}
-          >
-            힌트 보기 (첫 글자)
-          </TextButton>
-          <Typography
-            variant="label1"
-            color="semantic.foreground.neutral.secondary"
-            className={`pq-hint${hintShown ? "" : " is-hidden"}`}
-            aria-hidden={!hintShown}
-          >
-            <IconBulb width="1em" height="1em" aria-hidden />
-            힌트: {hintShown ? firstLetterHint(answer) : ""}
-          </Typography>
-        </div>
-      )}
-      <div className={shaking ? "pq-shake" : undefined} onAnimationEnd={() => setShaking(false)}>
-        <TextField
-          value={guess}
-          onChange={(e) => {
-            setGuess(e.target.value);
-            setWrong(false);
-          }}
-          placeholder="포켓몬 이름 (한국어·영어)"
-          status={wrong ? "negative" : "normal"}
-          disabled={!pokemon}
-          width="100%"
-          autoComplete="off"
-          ref={inputRef}
-        />
-        {wrong && (
-          <Typography variant="caption1" color="semantic.foreground.negative.primary">
-            땡! 다시 생각해 보세요.
-          </Typography>
-        )}
-      </div>
-      <div className="pq-actions">
-        <Button type="submit" fullWidth disabled={!pokemon || !guess.trim()}>
-          제출
-        </Button>
-        <Button type="button" variant="outlined" color="assistive" disabled={!pokemon} onClick={onGiveUp}>
-          모르겠어요
-        </Button>
-      </div>
-    </form>
   );
 }

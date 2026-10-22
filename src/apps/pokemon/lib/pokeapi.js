@@ -1,4 +1,4 @@
-import { API } from "../../api.js";
+import { API } from "../../../api.js";
 
 // 같은 포켓몬을 다시 부르지 않도록 요청(Promise)을 id별로 보관한다
 const cache = new Map();
