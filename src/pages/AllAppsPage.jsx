@@ -17,26 +17,29 @@ export default function AllAppsPage() {
 
   return (
     <main className="page">
-      <Typography as="h1" variant="title1" weight="bold" className="page-title">
-        전체 앱
-      </Typography>
-      <SearchField
-        placeholder="어떤 앱을 찾으세요?"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onReset={() => setQuery("")}
-      />
-      <div className="chips" role="group" aria-label="카테고리">
-        {CATEGORIES.map((c) => (
-          <Chip
-            key={c.id}
-            size="large"
-            active={category === c.id}
-            onClick={() => setCategory(c.id)}
-          >
-            {c.label}
-          </Chip>
-        ))}
+      {/* 제목·검색·카테고리는 위에 고정, 아래 카드 목록만 스크롤 */}
+      <div className="apps-header">
+        <Typography as="h1" variant="title1" weight="bold" className="page-title">
+          전체 앱
+        </Typography>
+        <SearchField
+          placeholder="어떤 앱을 찾으세요?"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onReset={() => setQuery("")}
+        />
+        <div className="chips" role="group" aria-label="카테고리">
+          {CATEGORIES.map((c) => (
+            <Chip
+              key={c.id}
+              size="large"
+              active={category === c.id}
+              onClick={() => setCategory(c.id)}
+            >
+              {c.label}
+            </Chip>
+          ))}
+        </div>
       </div>
       <div className="app-cards">
         {apps.map((app) => (
