@@ -5,6 +5,8 @@ import quizIcon from "../assets/hub/quiz-icon.png";
 import quizCard from "../assets/hub/quiz-card.png";
 import missionIcon from "../assets/hub/mission-icon.png";
 import missionCard from "../assets/hub/mission-card.png";
+import pokemonIcon from "./pokemon/assets/icon.png";
+import pokemonCard from "./pokemon/assets/card.png";
 
 import MoapetApp from "./moapet/index.jsx";
 import QuizApp from "./quiz/index.jsx";
@@ -66,10 +68,9 @@ export const MINI_APPS = [
     summary: "실루엣 보고 맞히기",
     catalog: "실루엣을 보고\n포켓몬을 맞혀요",
     cta: "맞히러 가기",
-    // 전용 그림이 생기기 전까지 오늘의 퀴즈 그림을 같이 쓴다
-    icon: quizIcon,
-    banner: quizCard,
-    card: quizCard,
+    icon: pokemonIcon,
+    banner: pokemonCard,
+    card: pokemonCard,
     Component: PokemonApp,
   },
 ];
