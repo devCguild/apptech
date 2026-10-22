@@ -9,6 +9,7 @@ import missionCard from "../assets/hub/mission-card.png";
 import MoapetApp from "./moapet/index.jsx";
 import QuizApp from "./quiz/index.jsx";
 import MissionApp from "./mission/index.jsx";
+import PokemonApp from "./pokemon/index.jsx";
 
 export const CATEGORIES = [
   { id: "all", label: "전체" },
@@ -56,6 +57,20 @@ export const MINI_APPS = [
     banner: missionCard,
     card: missionCard,
     Component: MissionApp,
+  },
+  {
+    id: "pokemon",
+    name: "포켓몬 퀴즈",
+    category: "quiz",
+    tone: "blue",
+    summary: "실루엣 보고 맞히기",
+    catalog: "실루엣을 보고\n포켓몬을 맞혀요",
+    cta: "맞히러 가기",
+    // 전용 그림이 생기기 전까지 오늘의 퀴즈 그림을 같이 쓴다
+    icon: quizIcon,
+    banner: quizCard,
+    card: quizCard,
+    Component: PokemonApp,
   },
 ];
 
