@@ -39,10 +39,10 @@ export function loadAllDays() {
   return days;
 }
 
-// 보상: 끼니 1회 기록 경험치 +10·포인트 +1, 하루 세 끼 모두면 보너스 경험치 +20 (기획서 5.4)
+// 보상: 끼니 1회 기록 경험치 +10·포인트 +3, 하루 세 끼 모두면 보너스 경험치 +20·포인트 1~20 랜덤 (기획서 5.4)
 export function rewardOf(meals) {
   const filled = Object.values(meals).filter((items) => items.length > 0).length;
-  return { filled, exp: filled * 10 + (filled === 3 ? 20 : 0), points: filled, complete: filled === 3 };
+  return { filled, exp: filled * 10 + (filled === 3 ? 20 : 0), points: filled * 3, complete: filled === 3 };
 }
 
 export function totalOf(items) {
