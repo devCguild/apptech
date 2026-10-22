@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 150" width="160" height="150">
+  <!-- 산책 스팟: 공원 길과 나무 두 그루 -->
+  <ellipse cx="80" cy="128" rx="70" ry="14" fill="#b9dfa8"/>
+  <path d="M62 150 C70 128 92 120 96 104 L104 104 C102 124 86 132 82 150 Z" fill="#f3e3c3"/>
+  <rect x="40" y="78" width="8" height="46" rx="3" fill="#9a6b45"/>
+  <circle cx="44" cy="62" r="26" fill="#5fb565"/>
+  <circle cx="32" cy="72" r="14" fill="#4fa257"/>
+  <rect x="112" y="90" width="7" height="36" rx="3" fill="#9a6b45"/>
+  <circle cx="115" cy="78" r="20" fill="#78c47a"/>
+  <circle cx="126" cy="86" r="11" fill="#5fb565"/>
+  <path d="M96 40 c0-9 13-9 13 0 c0 8-6.5 14-6.5 14 s-6.5-6-6.5-14 z" fill="#ff7a59"/>
+  <circle cx="102.5" cy="40" r="3" fill="#fff"/>
+</svg>
