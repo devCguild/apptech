@@ -28,13 +28,13 @@ function validateStatus(value) {
 function validSession(value, environment, now) {
   return isObject(value) && typeof value.token === "string" && value.token.length <= 4096
     && /^[A-Za-z0-9._~-]+$/.test(value.token)
-    && typeof value.user_id === "string" && value.user_id.length > 0
     && value.environment === environment && typeof value.expires_at === "string"
     && Number.isFinite(Date.parse(value.expires_at)) && Date.parse(value.expires_at) > now;
 }
 
 function validateWallet(value, environment) {
   if (!isObject(value) || value.environment !== environment || value.unit !== "P"
+    || typeof value.user_id !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value.user_id)
     || !Number.isSafeInteger(value.balance) || value.balance < 0 || !Array.isArray(value.transactions)) {
     throw new RewardsError("invalid-response");
   }
@@ -143,7 +143,8 @@ export function createRewardsClient({
       session = await createSession(status.environment);
       wallet = await request(API.rewardsWallet, { headers: { Authorization: `Bearer ${session.token}` } });
     }
-    return { kind: "wallet", status, wallet: validateWallet(wallet, session.environment), persistent };
+    const validatedWallet = validateWallet(wallet, session.environment);
+    return { kind: "wallet", status, wallet: validatedWallet, persistent, userId: validatedWallet.user_id };
   }
 
   return {

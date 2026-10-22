@@ -27,7 +27,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: node --test src/lib/rewards.test.js
+      - run: node --test src/lib/*.test.js
       - run: npm run build
         env:
           BASE_PATH: /apptech/

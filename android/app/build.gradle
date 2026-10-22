@@ -1,0 +1,63 @@
+plugins {
+    id "com.android.application"
+}
+
+def localSettings = new Properties()
+def localFile = rootProject.file("local.properties")
+if (localFile.exists()) {
+    localFile.withInputStream { localSettings.load(it) }
+}
+def appKey = providers.environmentVariable("ADPOPCORN_APP_KEY")
+    .orElse(localSettings.getProperty("ADPOPCORN_APP_KEY", "")).get()
+def hashKey = providers.environmentVariable("ADPOPCORN_HASH_KEY")
+    .orElse(localSettings.getProperty("ADPOPCORN_HASH_KEY", "")).get()
+
+android {
+    namespace "com.devcguild.apptech"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.devcguild.apptech"
+        minSdk 23
+        targetSdk 35
+        versionCode 1
+        versionName "0.1.0"
+        resValue "string", "adpopcorn_app_key", appKey
+        resValue "string", "adpopcorn_hash_key", hashKey
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    sourceSets.main.assets.srcDir(layout.buildDirectory.dir("generated/assets/web"))
+}
+
+def webDist = layout.buildDirectory.dir("web-dist")
+def buildWeb = tasks.register("buildWeb", Exec) {
+    workingDir rootProject.projectDir.parentFile
+    commandLine providers.environmentVariable("NODE_BINARY").orElse("node").get(),
+        "node_modules/vite/bin/vite.js", "build", "--base", "./",
+        "--outDir", webDist.get().asFile.absolutePath, "--emptyOutDir"
+    inputs.files(fileTree("../../src"), fileTree("../../public"))
+    inputs.files("../../index.html", "../../vite.config.js", "../../package.json", "../../package-lock.json")
+    outputs.dir webDist
+}
+def syncWebAssets = tasks.register("syncWebAssets", Sync) {
+    dependsOn buildWeb
+    from webDist
+    into layout.buildDirectory.dir("generated/assets/web")
+}
+tasks.named("preBuild").configure { dependsOn syncWebAssets }
+
+dependencies {
+    implementation "androidx.webkit:webkit:1.12.1"
+    implementation "com.igaworks.offerwall:AdPopcornOfferwall:9.2.7"
+}
