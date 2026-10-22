@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 112">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eaf6f6"/>
+      <stop offset="1" stop-color="#d3eeec"/>
+    </linearGradient>
+    <radialGradient id="globe" cx="0.38" cy="0.32" r="0.75">
+      <stop offset="0" stop-color="#7fe0d6"/>
+      <stop offset="1" stop-color="#1fa39a"/>
+    </radialGradient>
+    <radialGradient id="pin" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#ff9a8a"/>
+      <stop offset="1" stop-color="#ef5a4a"/>
+    </radialGradient>
+  </defs>
+  <rect width="112" height="112" rx="28" fill="url(#bg)"/>
+  <circle cx="54" cy="62" r="30" fill="url(#globe)"/>
+  <path d="M34 52c6-4 12-2 15 3s9 4 11 9-3 10-9 9-10 5-14 1-8-17-3-22z" fill="#c9f2b9" opacity="0.9"/>
+  <path d="M64 40c5 0 10 4 11 9s-4 6-8 4-7-3-7-7 1-6 4-6z" fill="#c9f2b9" opacity="0.9"/>
+  <ellipse cx="45" cy="47" rx="8" ry="4" fill="#fff" opacity="0.35" transform="rotate(-30 45 47)"/>
+  <path d="M78 22c-8 0-14 6-14 14 0 10 14 24 14 24s14-14 14-24c0-8-6-14-14-14z" fill="url(#pin)"/>
+  <circle cx="78" cy="36" r="5" fill="#fff"/>
+</svg>

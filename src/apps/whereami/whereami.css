@@ -1,0 +1,58 @@
+/* 담당: CMG — '여기는 어디?' 전용 스타일. 공용 값(--radius, --card-bg 등)은 src/index.css 를 따른다 */
+
+/* 홈·전체 앱 카드 색. 다른 앱 tone 과 겹치지 않게 하늘빛 민트 */
+.tone-sky { background: #dcf3f1; }
+.cta-sky { background: #14918a !important; }
+
+.whereami {
+  flex: 1; display: flex; flex-direction: column; gap: 12px;
+  padding: 4px 20px 32px; background: var(--page-bg);
+}
+
+.whereami-hero {
+  position: relative; overflow: hidden; min-height: 132px;
+  border-radius: var(--radius); padding: 20px 24px;
+  display: flex; align-items: center;
+}
+.whereami-hero-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 6px; max-width: 58%; }
+.whereami-hero-art { position: absolute; right: 8px; bottom: 0; height: 100%; width: auto; }
+
+.whereami-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.whereami-stat {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: var(--card-bg); border-radius: 16px; padding: 12px 8px;
+}
+
+.whereami-card {
+  display: flex; flex-direction: column; gap: 14px;
+  background: var(--card-bg); border-radius: var(--radius); padding: 16px;
+}
+.whereami-photo {
+  width: 100%; aspect-ratio: 16 / 10; object-fit: cover;
+  border-radius: 14px; background: #eef1f4;
+}
+.whereami-photo.is-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+}
+
+.whereami-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.whereami-option {
+  min-height: 56px; padding: 12px; border-radius: 14px;
+  border: 1.5px solid #e3e6ea; background: #f7f8fa; color: inherit;
+  cursor: pointer; font: inherit; text-align: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+.whereami-option:not(:disabled):active { background: #dcf3f1; border-color: #14918a; }
+.whereami-option:disabled { cursor: default; }
+.whereami-option.is-correct { background: #e2f1dd; border-color: #2f7d3b; }
+.whereami-option.is-wrong { background: #feeddf; border-color: #e2723c; }
+
+.whereami-result {
+  display: flex; flex-direction: column; gap: 6px;
+  border-radius: var(--radius); padding: 20px 24px;
+}
+.whereami-result.is-correct { background: var(--tone-green); }
+.whereami-result.is-wrong { background: var(--tone-peach); }
+.whereami-next { margin-top: 10px; align-self: flex-start; background: #14918a !important; }
+
+.whereami-source { text-align: center; padding: 4px 8px; }

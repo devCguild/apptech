@@ -3,6 +3,8 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.webcam_quiz import router as webcam_quiz_router
+
 app = FastAPI(title="apptech API")
 
 # 프론트 주소(Pages·Vercel·로컬)만 이 API를 부를 수 있다. 쉼표로 여러 개.
@@ -20,6 +22,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+app.include_router(webcam_quiz_router)
 
 
 @app.get("/api/health")
