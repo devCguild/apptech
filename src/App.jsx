@@ -1,27 +1,24 @@
-import { Typography } from "@montage-ui/core";
+import { Navigate, Route, Routes, useMatch } from "react-router";
 
-import { TIME_SLOTS } from "./timeSlots.js";
-import PreviewSwitch from "./components/PreviewSwitch.jsx";
-import Greeting from "./components/Greeting.jsx";
-import SlotCard from "./components/SlotCard.jsx";
-import ApiBox from "./components/ApiBox.jsx";
+import TabBar from "./components/TabBar.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import AllAppsPage from "./pages/AllAppsPage.jsx";
+import RecordsPage from "./pages/RecordsPage.jsx";
+import MiniAppPage from "./pages/MiniAppPage.jsx";
 
 export default function App() {
+  const inMiniApp = useMatch("/apps/:appId");
+
   return (
-    <>
-      <PreviewSwitch />
-      <header className="header">
-        <Typography as="h1" variant="title2" weight="bold" color="semantic.foreground.neutral.strong">
-          (서비스 이름)
-        </Typography>
-        <Greeting />
-      </header>
-      <main className="cards">
-        {Object.entries(TIME_SLOTS).map(([slot, { label }]) => (
-          <SlotCard key={slot} slot={slot} label={label} />
-        ))}
-      </main>
-      <ApiBox />
-    </>
+    <div className="shell">
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/apps" element={<AllAppsPage />} />
+        <Route path="/apps/:appId" element={<MiniAppPage />} />
+        <Route path="/records" element={<RecordsPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      {!inMiniApp && <TabBar />}
+    </div>
   );
 }
