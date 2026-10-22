@@ -10,12 +10,15 @@ import walkArt from "./walk/walk.svg";
 import whereamiIcon from "./whereami/art-icon.svg"; // CMG
 import whereamiCard from "./whereami/art-card.svg"; // CMG
 import samki from "./meals/samki.svg";
+import pokemonIcon from "./pokemon/assets/icon.png";
+import pokemonCard from "./pokemon/assets/card.png";
 
 import QuizApp from "./quiz/index.jsx";
 import MissionApp from "./mission/index.jsx";
 import WalkApp from "./walk/index.jsx";
 import WhereamiApp from "./whereami/index.jsx"; // CMG
 import MealsApp from "./meals/index.jsx";
+import PokemonApp from "./pokemon/index.jsx";
 
 export const CATEGORIES = [
   { id: "all", label: "전체" },
@@ -103,6 +106,19 @@ export const MINI_APPS = [
     banner: whereamiCard,
     card: whereamiCard,
     Component: WhereamiApp,
+  },
+  {
+    id: "pokemon",
+    name: "포켓몬 퀴즈",
+    category: "quiz",
+    tone: "blue",
+    summary: "실루엣 보고 맞히기",
+    catalog: "실루엣을 보고\n포켓몬을 맞혀요",
+    cta: "맞히러 가기",
+    icon: pokemonIcon,
+    banner: pokemonCard,
+    card: pokemonCard,
+    Component: PokemonApp,
   },
 ];
 
