@@ -51,3 +51,4 @@
 
 ## 실수에서 배운 규칙
 <!-- - (10/22) (해라/하지 마라) ___ (왜: ___) → 검사: ___ -->
+- (10/22) 백엔드 주소는 `src/api.js` 의 `API_BASE` 로만 만들고 `import.meta.env` 를 다른 곳에서 직접 읽지 않는다. PR 병합 전에 `node --test src/lib/rewards.test.js` 를 돌린다. (왜: AI가 테스트 없이 병합한 PR의 `import.meta.env.VITE_…` 때문에 Pages 배포가 멈췄고, 운영 화면이 localhost:8000 을 불렀다) → 검사: 위 테스트 통과 + 배포된 화면 네트워크에 localhost 0건
