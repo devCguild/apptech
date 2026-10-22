@@ -33,21 +33,23 @@ PokeAPI의 두 엔드포인트를 쓴다. 주소는 레포 규칙대로 `src/api
 
 ## 정답 판정
 
-`quiz.js`의 `isCorrect`가 입력값과 이름의 공백을 모두 지우고 소문자로 바꿔 비교한다. 정답 언어를 정하기 전까지는 한국어와 영어 이름을 모두 정답으로 받는다.
+`lib/quiz.js`의 `isCorrect`가 입력값과 이름의 공백을 모두 지우고 소문자로 바꿔 비교한다. 정답 언어를 정하기 전까지는 한국어와 영어 이름을 모두 정답으로 받는다.
 
 ## 구조
 
-레포 `CLAUDE.md`의 앱 구조 규칙대로 미니앱 하나를 `src/apps/<앱id>/` 폴더 하나에 둔다. 시작 파일은 `index.jsx`의 기본 내보내기다.
+레포 `CLAUDE.md`의 앱 구조 규칙대로 미니앱 하나를 `src/apps/<앱id>/` 폴더 하나에 둔다. 시작 파일은 `index.jsx`의 기본 내보내기다. 폴더 안은 화면 조각(`components/`)과 화면이 없는 로직(`lib/`)으로 나눈다.
 
 ```
 src/apps/pokemon/
 ├── index.jsx              # PokemonQuiz (기본 내보내기): 지금 문제·공개 여부·포인트, 다음 문제 미리 받기
-│                          # QuizStage: 실루엣 무대 (memo)
-│                          # QuizForm: 입력값·오답·힌트·제출
 ├── PokemonQuiz.css        # 퀴즈 전용 스타일, 클래스는 모두 pq- 로 시작
-├── pokeapi.js             # PokeAPI 호출, 캐시, 미리 받기
-├── quiz.js                # 문제 뽑기, 정답 판정, 힌트
-├── storage.js             # 포인트: lib/points.js 로 적립
+├── components/
+│   ├── QuizStage.jsx      # 실루엣 무대 (memo)
+│   └── QuizForm.jsx       # 입력값·오답·힌트·제출
+├── lib/
+│   ├── pokeapi.js         # PokeAPI 호출, 캐시, 미리 받기
+│   ├── quiz.js            # 문제 뽑기, 정답 판정, 힌트
+│   └── storage.js         # 포인트: src/lib/points.js 로 적립
 ├── assets/                # 홈·전체 앱 그림 (icon.png, card.png)
 └── PLAN.md
 ```
@@ -72,15 +74,15 @@ src/apps/pokemon/
 
 ## 불러오기와 캐시
 
-`pokeapi.js`의 `fetchPokemon`은 요청을 번호별로 보관해서 같은 포켓몬을 다시 부르지 않는다. 실패한 요청은 지워서 "다시 시도"로 다시 부를 수 있다.
+`lib/pokeapi.js`의 `fetchPokemon`은 요청을 번호별로 보관해서 같은 포켓몬을 다시 부르지 않는다. 실패한 요청은 지워서 "다시 시도"로 다시 부를 수 있다.
 
 지금 문제가 보이면 `preloadPokemon`으로 다음 문제의 데이터를 받고 이미지를 미리 디코딩한다. "다음 문제"를 누를 때 `peekPokemon`으로 미리 받아 둔 데이터를 바로 꺼내서 "불러오는 중" 화면 없이 넘어간다. 미리 받기가 실패하면 넘길 때 다시 부르고, 그래도 실패하면 안내와 "다시 시도" 버튼을 보여 준다.
 
 ## 포인트 저장
 
-포인트를 읽고 쓰는 코드는 `storage.js` 한 곳에 모은다. 퀴즈 코드는 `getPoints()`, `addPoints(n)`만 부르고 저장 위치를 모른다.
+포인트를 읽고 쓰는 코드는 `lib/storage.js` 한 곳에 모은다. 퀴즈 코드는 `getPoints()`, `addPoints(n)`만 부르고 저장 위치를 모른다.
 
-`storage.js`는 팀 공통 `src/lib/points.js`의 `addPoints("pokemon", 10, "포켓몬 실루엣 퀴즈 정답")`으로 적립 기록을 쌓는다. 기록은 localStorage `daily3_points`에 저장되고, 홈과 내 기록 화면의 포인트가 같은 기록을 읽는다. 퀴즈 화면 위에는 홈과 같은 전체 잔액을 "내 포인트"로 보여 준다. 적립 기록에는 `appId`가 남아서 내 기록 화면에서는 어느 앱에서 받았는지 구분된다.
+`lib/storage.js`는 팀 공통 `src/lib/points.js`의 `addPoints("pokemon", 10, "포켓몬 실루엣 퀴즈 정답")`으로 적립 기록을 쌓는다. 기록은 localStorage `daily3_points`에 저장되고, 홈과 내 기록 화면의 포인트가 같은 기록을 읽는다. 퀴즈 화면 위에는 홈과 같은 전체 잔액을 "내 포인트"로 보여 준다. 적립 기록에는 `appId`가 남아서 내 기록 화면에서는 어느 앱에서 받았는지 구분된다.
 
 ## 디자인
 
